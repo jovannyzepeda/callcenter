@@ -1,0 +1,59 @@
+%h1 Listing contracts
+
+%table
+  %thead
+    %tr
+      %th Campaing
+      %th Date
+      %th User
+      %th Season
+      %th Portfolio number
+      %th Membership
+      %th Membership number
+      %th Membership size
+      %th Membership type
+      %th Mail
+      %th Sell price
+      %th Number weeks
+      %th Price week
+      %th Price rent
+      %th Type
+      %th Owner
+      %th Legal representative
+      %th Atipogente
+      %th Commission
+      %th Coowner
+      %th
+      %th
+      %th
+
+  %tbody
+    - @contracts.each do |contract|
+      %tr
+        %td= contract.campaing
+        %td= contract.date
+        %td= contract.user
+        %td= contract.season
+        %td= contract.portfolio_number
+        %td= contract.membership
+        %td= contract.membership_number
+        %td= contract.membership_size
+        %td= contract.membership_type
+        %td= contract.mail
+        %td= contract.sell_price
+        %td= contract.number_weeks
+        %td= contract.price_week
+        %td= contract.price_rent
+        %td= contract.type
+        %td= contract.owner
+        %td= contract.legal_representative
+        %td= contract.atipogente
+        %td= contract.commission
+        %td= contract.coowner
+        %td= link_to 'Show', contract
+        %td= link_to 'Edit', edit_contract_path(contract)
+        %td= link_to 'Destroy', contract, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Contract', new_contract_path

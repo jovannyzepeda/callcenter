@@ -1,0 +1,31 @@
+%h2.text-center.alert.alert-danger
+	Members of 
+	= @group.nombre
+
+%p add user to group
+= form_for [@group,@newuser] do |f|
+	=f.select :user_id, options_for_select(@users), {},{class: "form-control max-trescientos"}
+	%br
+	=f.submit "Add user", class: "btn btn-primary"
+%br
+%br
+.col-md-12.bigmargin.border
+	%h4.alert.alert-info.text-center
+		Users list
+	%ul.list-group
+		-@group.user.each do |user|
+			.col-md-6.border
+				%i.fa.fa-user
+				=user.nombre
+				=link_to  group_usergroup_path(@group,user), :method => :delete, :data => { :confirm => 'Are you sure?' } do
+					%i.fa.fa-times.delete
+
+
+
+
+= link_to edit_group_path(@group), class: "btn btn-info" do
+	%i.fa.fa-edit
+	Edit Group
+= link_to groups_path, class: "btn btn-default" do
+	%i.fa.fa-reply
+	Go back

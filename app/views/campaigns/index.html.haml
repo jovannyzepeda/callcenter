@@ -1,0 +1,29 @@
+%h2.text-center.alert.alert-danger
+  %i.fa.fa-th-list Listing Campaigns
+
+
+.table-responsive
+  %table.table.table-striped
+    %thead
+      %tr
+        %th Company
+        %th Campaign
+        %th
+        %th
+        %th
+
+    %tbody
+      - @campaigns.each do |campaign|
+        %tr
+          %td= campaign.nombre
+          %td= campaign.company.nombre
+          %td= link_to 'Show', campaign
+          %td= link_to 'Edit', edit_campaign_path(campaign)
+          %td= link_to 'Destroy', campaign, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to new_campaign_path, class: "btn btn-default" do
+  %i.fa.fa-plus
+  New Campaign
+ 

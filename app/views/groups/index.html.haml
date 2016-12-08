@@ -1,0 +1,25 @@
+%h2.text-center.alert.alert-danger
+  %i.fa.fa-th-list Listing Groups
+
+.table-responsive
+  %table.table.table-striped
+    %thead 
+      %tr
+        %th Nombre
+        %th
+        %th
+        %th
+
+    %tbody
+      - @groups.each do |group|
+        %tr
+          %td= group.nombre
+          %td= link_to 'Show', group
+          %td= link_to 'Edit', edit_group_path(group)
+          %td= link_to 'Destroy', group, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+  %br
+
+= link_to new_group_path, class: "btn btn-default" do
+  %i.fa.fa-plus
+  New group

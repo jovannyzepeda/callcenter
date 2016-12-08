@@ -1,0 +1,28 @@
+%h2.text-center.alert.alert-danger
+  %i.fa.fa-th-list Listing companies
+
+
+.table-responsive
+  %table.table.table-striped
+    %thead
+      %tr
+        %th 
+        %th Name
+        %th
+        %th
+        %th
+
+    %tbody
+      - @companies.each do |company|
+        %tr
+          %td= image_tag company.logo.url(:thumb)
+          %td= company.nombre
+          %td= link_to 'Show', company
+          %td= link_to 'Edit', edit_company_path(company)
+          %td= link_to 'Destroy', company, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to new_company_path, class: "btn btn-default" do
+  %i.fa.fa-plus
+  New company

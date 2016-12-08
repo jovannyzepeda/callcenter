@@ -1,0 +1,45 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  campaing: one
+  date: 2016-11-22
+  user: one
+  season: MyString
+  portfolio_number: MyString
+  membership: MyString
+  membership_number: MyString
+  membership_size: MyString
+  membership_type: MyString
+  mail: MyString
+  sell_price: 1.5
+  number_weeks: 1.5
+  price_week: 1.5
+  price_rent: 1.5
+  type: 
+  owner: MyString
+  legal_representative: MyString
+  atipogente: MyString
+  commission: 1.5
+  coowner: MyString
+
+two:
+  campaing: two
+  date: 2016-11-22
+  user: two
+  season: MyString
+  portfolio_number: MyString
+  membership: MyString
+  membership_number: MyString
+  membership_size: MyString
+  membership_type: MyString
+  mail: MyString
+  sell_price: 1.5
+  number_weeks: 1.5
+  price_week: 1.5
+  price_rent: 1.5
+  type: 
+  owner: MyString
+  legal_representative: MyString
+  atipogente: MyString
+  commission: 1.5
+  coowner: MyString

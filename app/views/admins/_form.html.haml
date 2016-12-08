@@ -1,0 +1,21 @@
+= form_for(@user, :url => { :action => "create" } ) do |f|
+  .field
+    = f.label :email, "E-mail"
+    %br/
+    = f.email_field :email, autofocus: true, class: "form-control"
+  .field
+    = f.label :privilegio, "Privilege"
+    %br/
+    = f.select(:privilegio, [['Liner', 1],['Recepción', 2], ['Closer', 3], ['Finance Department |
+      ', 4], ['Group leader', 5], ['Administrator', 6]],                                        |
+      {}, {:class=>"form-control"})                                                             |
+  .field
+    = f.label :nombre, "User Name"
+    %br/
+    = f.text_field :nombre , class: "form-control"
+  .field
+    = f.label :meta, "Monthly target $$ (optional)"
+    %br/
+    = f.number_field :meta , class: "form-control", "step"=>"any"
+  .actions
+    = f.submit  "Save data user" ,"data-inline"=>"true", class: "btn btn-default"

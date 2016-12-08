@@ -1,0 +1,33 @@
+%h2.text-center.alert.alert-danger
+	Manager 
+	= @campaign.nombre
+
+%p add group to campaing 
+= form_for [@campaign,@newgroup] do |f|
+	=f.select :group_id, options_for_select(@groups), {},{class: "form-control max-trescientos"}
+	%br
+	=f.submit "Add group", class: "btn btn-primary"
+%br
+
+.col-md-12.bigmargin
+	-@campaign.group.each do |group|
+		.col-md-6.border
+			.text-center.alert.alert-info
+				%i.fa.fa-users
+				Users of group
+				=group.nombre
+				=link_to  campaign_groupcampaign_path(@campaign,group), :method => :delete, :data => { :confirm => 'Are you sure?' } do
+					%i.fa.fa-times.delete
+			-group.user.each do |user|
+				.col-md-6.border
+					%i.fa.fa-user
+					=user.nombre
+			
+
+
+= link_to edit_campaign_path(@campaign), class: "btn btn-info" do
+	%i.fa.fa-edit
+	Edit Group
+= link_to campaigns_path, class: "btn btn-default" do
+	%i.fa.fa-reply
+	Go back

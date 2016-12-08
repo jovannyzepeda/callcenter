@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="Jovanny Zepeda">
+	<title>SB Admin</title>
+	<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.blue_grey-red.min.css" /> 
+  	<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  	<%= csrf_meta_tags %>
+</head>
+<body>
+	<div class="big_padding">
+		<%=render "templates/menu"%>
+	</div>
+		
+    			<%if notice %>		
+					<p class="notice alert alert-info"><%= notice %></p>
+				<%end%>
+				<%if alert%>
+					<p class="alert alert alert-danger"><%= alert %></p>
+				<%end%>
+				<%= yield %>
+				
+		
+</body>
+</html>

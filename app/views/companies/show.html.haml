@@ -1,0 +1,31 @@
+%h2.text-center.alert.alert-danger
+	Manager company
+	= @company.nombre
+.col-md-12.no-padding.bigmargin
+	.col-md-6
+		%p.text-center.alert.alert-info.max-trescientos add campaign to company 
+		= form_for [@company,@newcampaign] do |f|
+			=f.select :campaign_id, options_for_select(@campaign), {},{class: "form-control max-trescientos"}
+			%br
+			=f.submit "Add campaign", class: "btn btn-primary"
+	.col-md-6
+	
+
+.col-md-12.bigmargin.border
+	%h4.alert.alert-info.text-center
+		Campaings list
+	%ul.list-group
+		-@company.campaign.each do |campaign|
+			.col-md-6.border
+				%i.fa.fa-share-alt-square
+				=campaign.nombre
+				=link_to  company_companycampaign_path(@company,campaign), :method => :delete, :data => { :confirm => 'Are you sure?' } do
+					%i.fa.fa-times.delete
+
+.col-md-12
+	= link_to edit_company_path(@company), class: "btn btn-info" do
+		%i.fa.fa-edit
+		Edit Company
+	= link_to companies_path, class: "btn btn-default" do
+		%i.fa.fa-reply
+		Go back

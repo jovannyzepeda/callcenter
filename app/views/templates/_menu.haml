@@ -1,0 +1,53 @@
+.navbar.navbar-default
+  .container-fluid
+    .navbar-header
+      %button.navbar-toggle{"data-target" => ".navbar-responsive-collapse", "data-toggle" => "collapse", :type => "button"}
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      =link_to 'Home', root_path, class: "navbar-brand"
+    .navbar-collapse.collapse.navbar-responsive-collapse
+      %ul.nav.navbar-nav
+        - if user_signed_in?
+          -if current_user.is_adminempresa?
+            %li
+              = link_to  companies_path, class: "page-scroll" do
+                %i.fa.fa-university 
+                Companies
+            %li
+              = link_to  campaigns_path, class: "page-scroll" do
+                %i.fa.fa-share-alt-square 
+                Campaings
+          -if current_user.is_admingroup?
+            %li
+              = link_to  groups_path, class: "page-scroll" do
+                %i.fa.fa-group 
+                Groups  
+      %ul.nav.navbar-nav.navbar-right
+        %li
+          %a{:href => "javascript:void(0)"} Link
+        %li.dropdown
+          %a.dropdown-toggle{"data-target" => "#", "data-toggle" => "dropdown"}
+            %i.fa.fa-users 
+            User
+            %b.caret
+          %ul.dropdown-menu
+            - if user_signed_in?
+              -if current_user.is_admin?
+                %li
+                  = link_to  admins_path, class: "page-scroll" do
+                    %i.fa.fa-user
+                    Users  
+              %li
+                = link_to  destroy_user_session_path, method: :delete, class: "page-scroll" do
+                  %i.fa.fa-power-off
+                  Log Out
+              %li
+                = link_to edit_user_registration_path,"class" => "page-scroll" do
+                  %i.fa.fa-address-card-o
+                  My Account
+            - else
+              %li
+                = link_to new_user_session_path, class: "page-scroll" do
+                  %i.fa.fa-podcast Loggin
+
