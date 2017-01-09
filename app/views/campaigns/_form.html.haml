@@ -9,9 +9,6 @@
   .field
     = f.label :nombre
     = f.text_field :nombre, class: "form-control"
-  .field
-    = f.label :company_id
-    = f.select :company_id, options_for_select(@company),{},{class: "form-control"}
   .actions
     = f.submit 'Save', class: "btn btn-primary"
  

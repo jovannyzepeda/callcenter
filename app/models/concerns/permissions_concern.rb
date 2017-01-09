@@ -13,13 +13,7 @@ module PermissionsConcern
 	def is_adminempresa?
 		self.privilegio >= 4
 	end
-	def is_lider?
-		self.privilegio >= 5
-	end
 	def is_admin?
 		self.privilegio >= 6
 	end
-	def is_superadmin?
-		self.privilegio >= 7
-	end
-end
+end 

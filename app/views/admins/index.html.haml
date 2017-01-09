@@ -12,14 +12,15 @@
   %table.table.table-striped
     %thead
       %tr
+        %th Nombre
         %th E-mail
         %th Privilege
     %tbody
       - @users.each do |user|
         %tr
+          %td= user.nombre
           %td= user.email
-          %td
-            Liner
+          %td= user.privilegio?
           %td
             = link_to admin_destroy_path(user), method: :delete, data: { confirm: "Are you sure?" } do
               %i.fa.fa-user-times{"aria-hidden" => "true"} Delete user

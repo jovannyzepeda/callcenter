@@ -1,0 +1,11 @@
+-if user_signed_in?
+	-if current_user.is_admin?
+		=render "admin"
+	-elsif current_user.is_recepcion?
+		=render "recepcion"
+	-elsif current_user.is_vendor?
+		=render "vendor"
+	-else
+		=render "default"
+-else
+	=render "default"

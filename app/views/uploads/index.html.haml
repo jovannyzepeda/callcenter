@@ -1,0 +1,7 @@
+.col-md-6.col-md-offset-3
+	%h2.alert.alert-info.text-center
+		%i.fa.fa-plus-square-o 
+		upload data to campaign
+	= render 'form'
+	= link_to root_path, class: "btn btn-default" do
+		%i.fa.fa-reply{"aria-hidden" => "true"} Go back

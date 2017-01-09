@@ -1,0 +1,104 @@
+.col-md-10.col-md-offset-1
+    %h1.alert.alert-danger.text-center
+        %i.fa.fa-user
+        =@contact.cliente
+    .big_margin
+    -if @contact.contract
+        %button.btn.btn-primary.white-text{:onclick => "open_modal()"}
+            %i.fa.fa-eye
+            Show Data contract
+        =link_to contact_download_contract_path(@contact,@contact.contract),method: :post, class: "btn btn-danger white-text" do
+            %i.fa.fa-download
+            Download contract
+    -else
+        Current_status : 
+        =@contact.status?
+        %button.btn.btn-primary.white-text{:onclick => "open_modal()"}
+            %i.fa.fa-plus
+            Create contract
+    .bigmargin
+        .data_contract.dispnone
+            =render "contracts/form"
+    -if current_user.is_recepcion?
+        .max_250.float_right
+            =form_for @contact do |f|
+                =f.label :date_close
+                =f.date_field :date_close, class: "form-control", id: "date_close_picker"
+                =f.label :status
+                =f.select(:status, options_for_select(["Canceled", "Approved"]), {} , {class: "form-control", id: "status_element"})
+                %br
+                =f.submit "update", class: "btn btn-primary" 
+.col-md-10.col-md-offset-1.bigmargin
+    -if current_user.is_admin?
+        = link_to edit_contact_path(@contact), class: "btn btn-info white-text" do
+            %i.fa.fa-edit
+            Edit contact
+    =link_to contacts_path, class: "btn btn-default" do
+        %i.fa.fa-reply
+        Go back
+.col-md-10.col-md-offset-1.bigmargin.no_margin_top
+    %h4.alert.alert-info.text-center
+        %i.fa.fa-history
+        History sell
+    .col-md-6
+        -@contact.historycontacts.order(created_at: :desc).each do |history|
+            %h6.alert.alert-warning.text-center
+                =history.title
+            %p.text-right
+                History created by: 
+                =history.user.nombre
+                at
+                =history.created_at.strftime('%a, %d %b %Y %H:%M:%S')
+            %p
+                -if history.email
+                    -if history.user.is_recepcion?
+                        ="El administrador #{history.user.nombre} ha enviado un correo al cliente #{history.email} con el siguiente contenido #{history.content}"
+                    -else
+                        ="El usuario #{history.user.nombre} ha solicitado el enviar un correo al cliente #{history.email} con el siguiente contenido #{history.content}"
+                -else
+                    ="El usuario #{history.user.nombre} ha creado la siguiente historia: #{history.content}"
+                %p.text-right
+                    -if history.attachment.present?
+                        =link_to contact_download_attachment_path(@contact,history),method: :post, class: "btn btn-gray white-text" do
+                            %i.fa.fa-file-pdf-o
+                            Descargar Adjunto
+    .col-md-6
+        %button.btn.yellow{onclick:"viewforms('mail')"}
+            %i.fa.fa-paper-plane-o
+            Send mail
+        %button.btn.btn-success{onclick:"viewforms('history')"}
+            %i.fa.fa-plus
+            create Event
+        #mail.dispnone
+            =render "historycontact/form"
+        #history.dispnone
+            =render "historycontact/formaction"
+
+:javascript
+    $(document).ready(function(){
+        if("#{@contract.id.present?}" == "true"){
+            $("#option_sell").val("#{@contract.tipo}")
+        }
+        if("#{@contact.status.present?}" == "true"){
+            $("#status_element").val("#{@contact.status}")
+        }
+    });
+%link{:href => "//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css", :rel => "stylesheet"}/
+
+%script{:src => "https://code.jquery.com/ui/1.12.1/jquery-ui.js"}
+:javascript
+    $(document).ready(function(){
+        if($("#calendario")[0].type == "text"){
+            $( "#calendario" ).datepicker();
+            $("#date_close_picker").datepicker();
+        }
+        if("#{@contact.contract.present?}" != "true"){
+            $("#correo_mail").val("#{@contact.correo}")
+            $("#city").val("#{@contact.city}")
+            $("#country").val("#{@contact.country}")
+            $("#unit_size").val("#{@contact.unit_size}")
+            $("#season").val("#{@contact.season}")
+            $("#resort").val("#{@contact.resort}")
+        }
+        
+    });

@@ -1,0 +1,7 @@
+.col-md-10-col-md-offset-1.col-lg-8.col-lg-offset-2
+	%h4.text-center.alert.alert-info
+		Welcome to the sales tracking system
+
+	-@company.each do |company|
+		.col-md-4
+			=image_tag company.logo

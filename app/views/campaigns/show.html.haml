@@ -1,16 +1,19 @@
+%link{:href => "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css", :rel => "stylesheet"}/
+/ Latest compiled and minified JavaScript
+%script{:src => "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"}
 %h2.text-center.alert.alert-danger
 	Manager 
 	= @campaign.nombre
 
 %p add group to campaing 
 = form_for [@campaign,@newgroup] do |f|
-	=f.select :group_id, options_for_select(@groups), {},{class: "form-control max-trescientos"}
+	=f.select :group_id, options_for_select(@groups), {},{class: "selectpicker max-trescientos","data-live-search"=>"true"}
 	%br
 	=f.submit "Add group", class: "btn btn-primary"
 %br
 
 .col-md-12.bigmargin
-	-@campaign.group.each do |group|
+	-@campaign.groups.activos.each do |group|
 		.col-md-6.border
 			.text-center.alert.alert-info
 				%i.fa.fa-users
@@ -18,13 +21,11 @@
 				=group.nombre
 				=link_to  campaign_groupcampaign_path(@campaign,group), :method => :delete, :data => { :confirm => 'Are you sure?' } do
 					%i.fa.fa-times.delete
-			-group.user.each do |user|
+			-group.users.each do |user|
 				.col-md-6.border
 					%i.fa.fa-user
 					=user.nombre
 			
-
-
 = link_to edit_campaign_path(@campaign), class: "btn btn-info" do
 	%i.fa.fa-edit
 	Edit Group

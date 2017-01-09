@@ -10,21 +10,23 @@
 	<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.blue_grey-red.min.css" /> 
   	<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  	
   	<%= csrf_meta_tags %>
+
 </head>
-<body>
+<body oncontextmenu='return false;' onselectstart='return false;'>
 	<div class="big_padding">
 		<%=render "templates/menu"%>
 	</div>
-		
-    			<%if notice %>		
-					<p class="notice alert alert-info"><%= notice %></p>
-				<%end%>
-				<%if alert%>
-					<p class="alert alert alert-danger"><%= alert %></p>
-				<%end%>
-				<%= yield %>
-				
-		
+	<%if notice %>		
+		<p class="notice alert alert-info"><%= notice %></p>
+	<%end%>
+	<%if alert%>
+		<p class="alert alert alert-danger"><%= alert %></p>
+	<%end%>
+	<%= yield %>
+	<div class="backspinner dispnone" id="backspinner">
+		<i class="fa fa-refresh fa-spin fa-5x fa-fw" id="spinner"></i>
+	</div>
 </body>
 </html>

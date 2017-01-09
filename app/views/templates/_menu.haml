@@ -18,14 +18,26 @@
               = link_to  campaigns_path, class: "page-scroll" do
                 %i.fa.fa-share-alt-square 
                 Campaings
+            %li
+              = link_to  uploads_path, class: "page-scroll" do
+                %i.fa.fa-upload 
+                Upload data
           -if current_user.is_admingroup?
             %li
               = link_to  groups_path, class: "page-scroll" do
                 %i.fa.fa-group 
-                Groups  
+                Groups   
+          %li
+            =link_to contacts_path ,class: "page-scroll" do
+              %i.fa.fa-address-card
+              Contacts
       %ul.nav.navbar-nav.navbar-right
-        %li
-          %a{:href => "javascript:void(0)"} Link
+        -if user_signed_in?
+              
+          %li.dropdown.padding
+            =link_to "/notifications", class: "red_circle_white dropdown-toggle", id:"notificador", remote:true, data:{type:"script","target" => "#", "toggle" => "dropdown"} do
+              =current_user.notifications_count
+            %ul.dropdown-menu#list_notifications
         %li.dropdown
           %a.dropdown-toggle{"data-target" => "#", "data-toggle" => "dropdown"}
             %i.fa.fa-users 

@@ -1,21 +1,45 @@
+%link{:href => "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css", :rel => "stylesheet"}/
+/ Latest compiled and minified JavaScript
+%script{:src => "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"}
 %h2.text-center.alert.alert-danger
 	Manager company
 	= @company.nombre
 .col-md-12.no-padding.bigmargin
-	.col-md-6
+	.col-md-3
 		%p.text-center.alert.alert-info.max-trescientos add campaign to company 
 		= form_for [@company,@newcampaign] do |f|
-			=f.select :campaign_id, options_for_select(@campaign), {},{class: "form-control max-trescientos"}
+			=f.select :campaign_id, options_for_select(@campaign), {},{class: "selectpicker max-trescientos","data-live-search"=>"true"}
 			%br
 			=f.submit "Add campaign", class: "btn btn-primary"
-	.col-md-6
-	
-
+	.col-md-3
+		%p.text-center.alert.alert-info.max-trescientos Add Administrator to company 
+		= form_for [@company,@usercompany] do |f|
+			=f.select :user_id, options_for_select(@usersadministrator), {},{class: "selectpicker max-trescientos","data-live-search"=>"true"}
+			%br
+			=f.submit "Add Administrator", class: "btn btn-primary"
+	.col-md-3
+		=link_to new_company_template_path(@company), class: "btn btn-primary white-text" do 
+			%i.fa.fa-plus
+			Add new template
+		%ul.list-group.margin_top
+			-@company.templates.each do |template|
+				%li.list-group-item
+					=link_to "Template: #{@company.nombre}(#{template.lenguaje})",company_template_path(@company,template)
+	.col-md-3.bigmargin.border
+		%h4.alert.alert-info.text-center
+			Administrators list
+		%ul.list-group
+			-@company.users.each do |user|
+				.col-md-6.border
+					%i.fa.fa-share-alt-square
+					=user.nombre
+					=link_to company_usercompany_path(@company,user), :method => :delete, :data => { :confirm => 'Are you sure?' } do
+						%i.fa.fa-times.delete
 .col-md-12.bigmargin.border
 	%h4.alert.alert-info.text-center
 		Campaings list
 	%ul.list-group
-		-@company.campaign.each do |campaign|
+		-@company.campaign.activos.each do |campaign|
 			.col-md-6.border
 				%i.fa.fa-share-alt-square
 				=campaign.nombre

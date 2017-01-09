@@ -1,70 +1,102 @@
-= form_for @contract do |f|
+= form_for [@contact,@contract] do |f|
   - if @contract.errors.any?
     #error_explanation
       %h2= "#{pluralize(@contract.errors.count, "error")} prohibited this contract from being saved:"
       %ul
         - @contract.errors.full_messages.each do |msg|
           %li= msg
-
-  .field
-    = f.label :campaing
-    = f.text_field :campaing
-  .field
-    = f.label :date
-    = f.date_select :date
-  .field
-    = f.label :user
-    = f.text_field :user
-  .field
-    = f.label :season
-    = f.text_field :season
-  .field
-    = f.label :portfolio_number
-    = f.text_field :portfolio_number
-  .field
-    = f.label :membership
-    = f.text_field :membership
-  .field
-    = f.label :membership_number
-    = f.text_field :membership_number
-  .field
-    = f.label :membership_size
-    = f.text_field :membership_size
-  .field
-    = f.label :membership_type
-    = f.text_field :membership_type
-  .field
-    = f.label :mail
-    = f.text_field :mail
-  .field
-    = f.label :sell_price
-    = f.text_field :sell_price
-  .field
-    = f.label :number_weeks
-    = f.text_field :number_weeks
-  .field
-    = f.label :price_week
-    = f.text_field :price_week
-  .field
-    = f.label :price_rent
-    = f.text_field :price_rent
-  .field
-    = f.label :type
-    = f.text_field :type
-  .field
-    = f.label :owner
-    = f.text_field :owner
-  .field
-    = f.label :legal_representative
-    = f.text_field :legal_representative
-  .field
-    = f.label :atipogente
-    = f.text_field :atipogente
-  .field
-    = f.label :commission
-    = f.text_field :commission
-  .field
-    = f.label :coowner
-    = f.text_field :coowner
-  .actions
-    = f.submit 'Save'
+  .col-md-4.col-sm-6
+    .field
+      = f.label :date
+      = f.date_field :date,class: "form-control", id: "calendario"
+  .col-md-4.col-sm-6
+    .field
+      = f.label :season
+      = f.text_field :season,class: "form-control", id: "season"
+  .col-md-4.col-sm-6  
+    .field
+      = f.label :portfolio_number
+      = f.text_field :portfolio_number,class: "form-control"
+  .col-md-4.col-sm-6
+    .field
+      = f.label :membership
+      = f.text_field :membership,class: "form-control"
+  .col-md-4.col-sm-6
+    .field
+      = f.label :membership_number
+      = f.text_field :membership_number,class: "form-control"
+  .col-md-4.col-sm-6
+    .field
+      = f.label :membership_size
+      = f.text_field :membership_size,class: "form-control"
+  .col-md-4.col-sm-6
+    .field
+      = f.label :membership_type
+      = f.text_field :membership_type,class: "form-control"
+  .col-md-4.col-sm-6
+    .field
+      = f.label :mail
+      = f.email_field :mail,class: "form-control", id: "correo_mail"
+  .col-md-4.col-sm-6
+    .field
+      = f.label :tipo, "Type"
+      = f.select(:tipo, options_for_select(["Rent", "Sell"]),{},{class: "form-control", onchange: "active()", id: "option_sell"})
+  .col-md-4.col-sm-6#venta
+    .field
+      = f.label :sell_price
+      = f.number_field :sell_price,class: "form-control"
+  .col-md-4.col-sm-6#1renta
+    .field
+      = f.label :number_weeks 
+      = f.number_field :number_weeks,class: "form-control", onchange: "modificar()", id: "numweek"
+  .col-md-4.col-sm-6#2renta
+    .field
+      = f.label :price_week
+      = f.number_field :price_week,class: "form-control", onchange: "modificar()", id: "priceweek"
+  .col-md-4.col-sm-6#3renta
+    .field
+      = f.label :price_rent
+      = f.number_field :price_rent,class: "form-control", id: "price_rent" 
+  .col-md-4.col-sm-6
+    .field
+      = f.label :owner
+      = f.text_field :owner,class: "form-control"
+  .col-md-4.col-sm-6
+    .field
+      = f.label :legal_representative
+      = f.text_field :legal_representative,class: "form-control"
+  .col-md-4.col-sm-6
+    .field
+      = f.label :atipogente
+      = f.text_field :atipogente, class: "form-control"
+  .col-md-4.col-sm-6
+    .field
+      =f.label :unit_size
+      =f.text_field :unit_size, class: "form-control", id: "unit_size"
+  .col-md-4.col-sm-6
+    .field
+      =f.label :country
+      =f.text_field :country, class: "form-control", id: "country"
+  .col-md-4.col-sm-6
+    .field
+      =f.label :city
+      =f.text_field :city, class: "form-control", id: "city"
+  .col-md-4.col-sm-6
+    .field
+      =f.label :resort
+      =f.text_field :resort, class: "form-control", id: "resort"
+  .col-md-4.col-sm-6
+    .field
+      = f.label :commission
+      = f.text_field :commission,class: "form-control"
+  .col-md-4.col-sm-6
+    .field
+      = f.label :coowner
+      = f.text_field :coowner,class: "form-control"
+  .col-md-4.col-sm-6
+    .field
+      =f.label :lenguaje
+      =f.select(:lenguaje, options_for_select(["EN","ES"]),{},{class:"form-control", id: "select_lenguaje"})
+  .col-xs-12
+    .actions
+    = f.submit 'Guardar', class: "btn btn-primary "

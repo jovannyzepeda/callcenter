@@ -15,7 +15,7 @@ class CreateContracts < ActiveRecord::Migration[5.0]
       t.float :number_weeks
       t.float :price_week
       t.float :price_rent
-      t.string :type
+      t.string :tipo
       t.string :owner
       t.string :legal_representative
       t.string :atipogente

@@ -1,0 +1,17 @@
+.col-md-6.col-md-offset-3
+	%h2.alert.alert-info.text-center 
+		%i.fa.fa-plus-square-o
+		Edit Contact
+
+	= render 'form'
+
+	=link_to @contact, class: "btn btn-default" do
+		%i.fa.fa-reply
+		Go back
+:javascript
+	$(document).ready(function(){
+		if("#{@contact.user.present?}" == "true"){
+			$("#assign_to").val("#{@contact.user.id}")
+		}
+
+	});

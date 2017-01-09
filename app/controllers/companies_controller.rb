@@ -1,17 +1,19 @@
 class CompaniesController < ApplicationController
   before_action :set_company, only: [:show, :edit, :update, :destroy]
-
+  before_action :autenticacion_companygroup
   # GET /companies
   # GET /companies.json
   def index
-    @companies = Company.all
+    @companies = Company.activos
   end
 
   # GET /companies/1
   # GET /companies/1.json
   def show
     @newcampaign = Companycampaign.new
-    @campaign = Campaign.where("id not in(select campaign_id from companycampaigns)").map{ |c| [c.nombre, c.id] }
+    @usercompany = Usercompany.new
+    @campaign = Campaign.where("id not in(select campaign_id from companycampaigns where(company_id = #{@company.id}))").activos.map{ |c| [c.nombre, c.id] }
+    @usersadministrator = User.where("privilegio > 1 and id not in(select user_id from usercompanies where(company_id = #{@company.id}))").activos.map{ |c| [c.nombre, c.id] }
   end
 
   # GET /companies/new

@@ -1,0 +1,31 @@
+.col-md-12
+	=form_tag({controller: "welcome", action: "index"}, :method => "get") do 
+		=label_tag "Start Date"
+		%input{:name => "start_date", :type => "date"}/
+		=label_tag "End Date"
+		%input{:name => "end_date", :type => "date"}/
+		=submit_tag "View Data", class: "btn btn-default"
+	#container{:style => "min-width: 310px; height: 400px; margin: 0 auto"}
+.col-md-4
+	%h4.alert.alert-danger.text-center
+		Star of current month
+	.table-responsive
+		%table.table.table-stripe
+			%thead
+				%tr 
+					%th Liner
+					%th Goal
+					%th Score
+					%th Difference
+					%th Commission
+			%tbody
+				-@user_sell.each do |user|
+					%tr
+						%th=user[0].nombre
+						%th=user[0].meta
+						%th=user[1]
+						%th="#{user[1]-user[0].meta}"
+						%th=user[2]
+
+
+=render "graphics"

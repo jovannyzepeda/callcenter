@@ -11,8 +11,17 @@
 // about supported directives.
 //
 //= require jquery
+//= require bootsy
 //= require jquery_ujs
 //= require bootstrap
+//= require highcharts
+//= require highcharts/modules/data
+//= require highcharts/modules/drilldown
+//= require highcharts/modules/exporting
+//= require highcharts/modules/funnel
+//= require highcharts/modules/heatmap
+//= require highcharts/modules/no-data-to-display
+//= require highcharts/modules/offline-exporting
 //= require material
 //= require turbolinks
 //= require_tree .

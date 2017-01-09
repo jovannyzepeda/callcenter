@@ -1,6 +1,6 @@
 class UsergroupsController < ApplicationController
 	before_action :set_group, only: [:create]
-
+	before_action :autenticacion_groupadmin
 	def create
 		@usergroup = @group.usergroup.new(usergroup_params)
 	    respond_to do |format|

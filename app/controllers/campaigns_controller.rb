@@ -1,23 +1,23 @@
 class CampaignsController < ApplicationController
   before_action :set_campaign, only: [:show, :edit, :update, :destroy]
-
+  before_action :autenticacion_companygroup
+  before_action :auth
   # GET /campaigns
   # GET /campaigns.json
   def index
-    @campaigns = Campaign.all
+    @campaigns = Campaign.activos
   end
 
   # GET /campaigns/1
   # GET /campaigns/1.json
   def show
-    @groups = Group.where("id not in(select group_id from groupcampaigns)").map{ |c| [c.nombre, c.id] }
+    @groups = Group.where("id not in(select group_id from groupcampaigns where(campaign_id = #{@campaign.id}))").activos.map{ |c| [c.nombre, c.id] }
     @newgroup = Groupcampaign.new
   end
 
   # GET /campaigns/new
   def new
     @campaign = Campaign.new
-    @company = Company.all.map{ |c| [c.nombre, c.id] }
   end
 
   # GET /campaigns/1/edit
@@ -57,10 +57,13 @@ class CampaignsController < ApplicationController
   # DELETE /campaigns/1
   # DELETE /campaigns/1.json
   def destroy
-    @campaign.destroy
     respond_to do |format|
-      format.html { redirect_to campaigns_url, notice: 'Campaign was successfully destroyed.' }
-      format.json { head :no_content }
+      if @campaign.update(eliminado: true)
+        format.html { redirect_to campaigns_url, notice: 'Campaign was successfully destroyed.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to campaigns_url, notice: 'Was ocurred an error' }
+      end
     end
   end
 
@@ -72,6 +75,6 @@ class CampaignsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def campaign_params
-      params.require(:campaign).permit(:nombre, :company_id) 
+      params.require(:campaign).permit(:nombre) 
     end
 end

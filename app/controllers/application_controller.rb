@@ -9,8 +9,14 @@ class ApplicationController < ActionController::Base
 				redirect_to admins_path
 			end
 		end
-		def autenticacion_normal
+		def autenticacion_root
 			redirect_to root_path unless user_signed_in? && current_user.is_admin?
+		end
+		def autenticacion_groupadmin
+			redirect_to root_path unless user_signed_in? && current_user.is_admingroup?
+		end
+		def autenticacion_companygroup
+			redirect_to root_path unless user_signed_in? && current_user.is_adminempresa?
 		end
 	private
 	  	def auth

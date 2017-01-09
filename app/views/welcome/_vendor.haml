@@ -1,0 +1,26 @@
+.col-md-8.col-md-offset-2
+	%h4.alert.alert-info.text-center
+		="Welcome #{current_user.nombre}"
+	%p.alert.alert-danger
+		Your sales for the current month are
+		%b
+			=@user_sell
+		and your goal for the month
+		%b
+			=current_user.meta
+	%h3.alert.alert-warning.text-center
+		%i.fa.fa-list
+		Customers in proccess
+	.table-responsive
+		%table.table.table-stripe
+			%thead
+				%tr 
+					%th Client
+					%th Status
+					%th Created At
+			%tbody
+				-@current_user.contacts.ventas_faltantes.each do |contact|
+					%tr
+						%th=link_to contact.cliente, contact
+						%th=contact.status?
+						%th=contact.created_at.strftime('%a %d-%h-%y at %I:%M%p')

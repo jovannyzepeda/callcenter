@@ -1,0 +1,37 @@
+%h2.text-center.alert.alert-danger
+  %i.fa.fa-th-list Listing Contacts
+%input#filter{:onkeyup => "search()", :placeholder => "Search for names..", :type => "text"}/
+.table-responsive
+  %table.table.table-stripe
+    %thead
+      %tr 
+        %th Assign to 
+        %th Customer
+        %th Telephone
+        %th Status
+        %th Campaign
+        %th company
+        %th
+        %th
+        %th
+
+    %tbody#elements
+      - @contacts.each do |contact|
+        %tr
+          -if contact.user.present?
+            %td= contact.user.nombre
+          -else
+            %td "sd"
+          %td= contact.cliente
+          %td= contact.telefono
+          %td= contact.status?
+          %td= contact.campaign.nombre
+          %td= contact.campaign.company.nombre
+          %td= link_to 'Show', contact
+          -if current_user.is_admin?
+            %td= link_to 'Edit', edit_contact_path(contact)
+            %td= link_to 'Destroy', contact, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      =will_paginate @contacts
+
+%br
+

@@ -1,13 +1,13 @@
 class AdminsController < ApplicationController
   before_action :set_user
-  before_action :autenticacion_normal
+  before_action :autenticacion_root
   before_action :first_user
-  before_action :auth
+
 
   # # GET /admins
   # GET /admins.json
   def index
-    @users = User.all
+    @users = User.active
   end
 
   # GET /admins/1
@@ -29,6 +29,11 @@ class AdminsController < ApplicationController
   def create
     @pass = "system123456"
     @user = User.new(user_parames)
+    if User.last
+      @user.number = User.last_active.number
+    else
+      @user.number = 0
+    end
     @user.status = 1
     @user.password = "system123456"
     @user.password_confirmation = "system123456"
@@ -36,7 +41,7 @@ class AdminsController < ApplicationController
       @user.privilegio = 7
     end
     if @user.save
-      #Notificacion.bienvenida(@user,@pass).deliver
+      Notificacion.bienvenida(@user,@pass).deliver
       flash[:notice] = "User created correctly." 
       redirect_to admins_path
     else
@@ -74,6 +79,7 @@ class AdminsController < ApplicationController
     if user.privilegio != 7
       user.email = user.email + user.id.to_s
       user.encrypted_password = '$2a$10$BttO0P5nE9k9n5lsIwZoc.G5x5hg8vIOkm3iM9GJyoFwq9uN51mKC'
+      user.eliminado = true
       user.status = 0
       if user.save
         respond_to do |format|

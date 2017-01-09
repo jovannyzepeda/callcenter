@@ -1,0 +1,7 @@
+%li
+	= link_to  notification_path(id:notificacion.id),method: :put, class: "page-scroll" do
+		%i.fa.fa-bell-o
+		=notificacion.content
+		%br
+		=notificacion.created_at.strftime('%a, %d %b %Y %H:%M:%S')
+     

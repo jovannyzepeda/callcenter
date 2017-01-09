@@ -1,10 +1,13 @@
+%link{:href => "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css", :rel => "stylesheet"}/
+/ Latest compiled and minified JavaScript
+%script{:src => "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"}
 %h2.text-center.alert.alert-danger
 	Members of 
 	= @group.nombre
 
 %p add user to group
 = form_for [@group,@newuser] do |f|
-	=f.select :user_id, options_for_select(@users), {},{class: "form-control max-trescientos"}
+	=f.select :user_id, options_for_select(@users), {},{class: "selectpicker max-trescientos","data-live-search"=>"true"}
 	%br
 	=f.submit "Add user", class: "btn btn-primary"
 %br
@@ -13,7 +16,7 @@
 	%h4.alert.alert-info.text-center
 		Users list
 	%ul.list-group
-		-@group.user.each do |user|
+		-@group.users.each do |user|
 			.col-md-6.border
 				%i.fa.fa-user
 				=user.nombre

@@ -1,0 +1,12 @@
+= form_tag({:controller => "uploads", :action => "create_data"}, :method => "post",  remote:true, authenticity_token: true,:multipart => true, id: "uploads_forms") do
+	%p.alert.alert-danger
+		%i.fa.fa-exclamation-triangle
+		The excel file should have the data as follows 1 - name 2 - phone and should be upload in XLS format
+	=label_tag  :campaign_id, "Choose a campaign"
+	=select_tag :campaign_id, options_for_select(@campaign),{class: "form-control max-trescientos"}
+	%br
+	=label_tag  :file_data, "Choose a file with data"
+	=file_field_tag :file_data
+	%br
+	=submit_tag "Upload Data", class: "btn btn-primary", id: "send_data"
+	%br

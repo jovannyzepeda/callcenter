@@ -1,0 +1,19 @@
+= form_for [@contact,@historycontact] do |f|
+  - if @historycontact.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@historycontact.errors.count, "error")} prohibited this historycontact from being saved:"
+      %ul
+        - @historycontact.errors.full_messages.each do |msg|
+          %li= msg
+  .field
+    = f.label :title
+    = f.text_field :title, class: "form-control"
+  .field
+    = f.label :content
+    = f.text_area :content, class: "form-control"
+  .field
+    = f.label :attachment
+    = f.file_field :attachment, class: "form-control"
+    %input{type: "hidden", name: "accion", value: "history"}
+  .actions
+    = f.submit 'Save', class: "btn btn-info"

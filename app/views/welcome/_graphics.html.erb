@@ -1,0 +1,44 @@
+<script>
+	$(function () {
+	    Highcharts.chart('container', {
+	        title: {
+	            text: 'Sales chart',
+	            x: -20 //center
+	        },
+	        xAxis: {
+	            categories: [
+	            	<%@data.each do |dato|%>
+						'<%="#{dato[0]}"%>',
+					<%end%>
+	            ]
+	        },
+	        yAxis: {
+	            title: {
+	                text: 'Money $$'
+	            },
+	            plotLines: [{
+	                value: 0,
+	                width: 1,
+	                color: '#808080'
+	            }]
+	        },
+	        tooltip: {
+	            valueSuffix: '$'
+	        },
+	        legend: {
+	            layout: 'vertical',
+	            align: 'right',
+	            verticalAlign: 'middle',
+	            borderWidth: 0
+	        },
+	        series: [{
+	            name: 'Sell',
+	            data: [
+	            	<%@data.each do |dato|%>
+						<%="#{dato[1]}"%>,
+					<%end%>
+	            ]
+	        }]
+	    });
+	});
+</script>	

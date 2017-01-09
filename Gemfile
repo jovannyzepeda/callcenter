@@ -55,3 +55,12 @@ gem 'bootstrap-material-design'
 gem 'material_design_lite-rails'
 gem 'font-awesome-rails'
 gem 'paperclip'
+gem "spreadsheet"
+gem 'prawn-rails'
+gem 'bootsy'
+gem 'annotate'
+gem 'autoprefixer-rails'
+gem 'sidekiq'
+gem 'sinatra', require: nil
+gem "highcharts-rails"
+gem 'will_paginate'

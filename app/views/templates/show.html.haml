@@ -1,0 +1,90 @@
+%h2.text-center.alert.alert-danger
+	Company:
+	= @template.company.nombre 
+	= "(#{@template.lenguaje})"
+.col-md-6
+	=render "datatemplates/form"
+.col-md-6
+	%h4.alert.alert-info.text-center
+		List of key tags 
+	%p
+		.col-md-6
+			_campaign
+			%br
+			_sign
+			%br
+			_date
+			%br
+			_user
+			%br
+			_season
+			%br
+			_portfolio_number
+			%br
+			_membership
+			%br
+			_nmembership_number
+			%br
+			_smembership_size
+			%br
+			_tmembership_type
+		.col-md-6
+			_mail
+			%br
+			_sell_price
+			%br
+			_number_weeks
+			%br
+			_wprice_week
+			%br
+			_rprice_rent
+			%br
+			_type
+			%br
+			_owner
+			%br
+			_legal_representative
+			%br
+			_atipogente
+			%br
+			_coowner
+.col-md-12
+	%h4.alert.alert-info.text-center
+		Data content
+	.table-responsive
+		%table.table.table-striped
+			%thead 
+				%tr
+					%th Contenido
+					%th Width
+					%th Padding-top
+					%th Padding-left
+					%th Font-size
+					%th
+
+			%tbody
+				- @template.datatemplates.each do |data|
+					%tr
+						%td= data.content
+						%td= data.width
+						%td= data.height
+						%td= data.left_width
+						%td= data.fontsize
+						%td= link_to 'Edit', edit_company_template_datatemplate_path(@company,@template,data)
+						%td= link_to 'Destroy', [@company,@template,data], :method => :delete, :data => { :confirm => 'Are you sure?' }
+= link_to  edit_company_template_path([@company,@template]), class: "btn btn-info" do
+	%i.fa.fa-edit
+	Edit template
+= link_to @company, class: "btn btn-default" do
+	%i.fa.fa-reply
+	Go back
+
+.col-md-12
+	%h3.alert.alert-info.text-center
+		PRELIMINAR VIEW
+	- @template.datatemplates.each do |data|
+		%div.template_preview{:style => "width:#{data.width+200}px;padding-top:#{data.height}px;padding-left:#{data.left_width}px;"}
+			%pre.content{:style => "color: ##{data.color}!important; font-size:#{data.fontsize-2}px;"}
+				= data.content
+	%div{:style => "background: url('#{@template.papermate.url}');height:770px;width:770px;background-repeat:no-repeat;background-size: cover"}
+		

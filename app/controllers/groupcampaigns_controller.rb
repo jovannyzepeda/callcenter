@@ -1,6 +1,6 @@
 class GroupcampaignsController < ApplicationController
 	before_action :set_campaing, only: [:create]
-
+	before_action :autenticacion_companygroup
 	def create
 		@groupcampaign = @campaing.groupcampaign.new(groupcampaing_params)
 

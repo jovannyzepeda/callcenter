@@ -1,10 +1,10 @@
 class GroupsController < ApplicationController
   before_action :set_group, only: [:show, :edit, :update, :destroy]
-
+  before_action :autenticacion_groupadmin
   # GET /groups
   # GET /groups.json
   def index
-    @groups = Group.all
+    @groups = Group.activos
   end
 
   # GET /groups/1
@@ -12,7 +12,7 @@ class GroupsController < ApplicationController
   def show
     @newuser = Usergroup.new
     @members = Usergroup.all
-    @users = User.where("id not in(select user_id from usergroups)").map{ |c| [c.nombre, c.id] }
+    @users = User.where("id not in(select user_id from usergroups where(group_id = #{@group.id}))").activos.map{ |c| [c.nombre, c.id] }
   end
 
   # GET /groups/new
@@ -83,10 +83,13 @@ class GroupsController < ApplicationController
   # DELETE /groups/1
   # DELETE /groups/1.json
   def destroy
-    @group.destroy
     respond_to do |format|
-      format.html { redirect_to groups_url, notice: 'Group was successfully destroyed.' }
-      format.json { head :no_content }
+      if @group.update(eliminado: true)
+        format.html { redirect_to groups_url, notice: 'Group was successfully destroyed.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to groups_url, notice: 'Was ocurred an error' }
+      end
     end
   end
 
