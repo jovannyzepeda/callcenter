@@ -72,6 +72,6 @@ class TemplatesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def template_params
-      params.require(:template).permit( :lenguaje, :papermate)
+      params.require(:template).permit( :lenguaje, :papermate, :tipo)
     end
 end

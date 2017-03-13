@@ -5,7 +5,10 @@
       %ul
         - @historycontact.errors.full_messages.each do |msg|
           %li= msg
-
+  -if current_user.privilegio == 1
+    .field
+      = f.label :to_user, "Department"
+      = f.select :to_user, options_for_select(["Contact department","Legal department"]),{include_blank: true},class: "form-control"
   .field
     = f.label :title
     = f.text_field :title, class: "form-control"

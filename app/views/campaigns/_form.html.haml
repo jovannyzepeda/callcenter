@@ -9,6 +9,12 @@
   .field
     = f.label :nombre
     = f.text_field :nombre, class: "form-control"
+  .field
+    =f.label :company_id
+    =f.select(:company_id, options_for_select(@company), {} , {class: "selectpicker max-trescientos","data-live-search"=>"true", id: "select_company"})
   .actions
     = f.submit 'Save', class: "btn btn-primary"
- 
+:javascript
+  if(#{@campaign.company_id.present?}){
+    $("#select_company").val(#{@campaign.company_id});
+  }

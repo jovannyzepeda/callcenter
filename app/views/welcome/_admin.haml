@@ -22,10 +22,10 @@
 				-@user_sell.each do |user|
 					%tr
 						%th=user[0].nombre
-						%th=user[0].meta
-						%th=user[1]
-						%th="#{user[1]-user[0].meta}"
-						%th=user[2]
+						%th=user[0].meta.to_i
+						%th=user[1].to_i
+						%th="#{user[1].to_i-user[0].meta.to_i}"
+						%th=user[2].to_i
 
 
 =render "graphics"

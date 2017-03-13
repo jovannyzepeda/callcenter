@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170109150450) do
+ActiveRecord::Schema.define(version: 20170202195611) do
 
   create_table "bootsy_image_galleries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "bootsy_resource_type"
@@ -44,15 +44,13 @@ ActiveRecord::Schema.define(version: 20170109150450) do
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
     t.boolean  "eliminado",         default: false
-  end
-
-  create_table "companycampaigns", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "company_id"
-    t.integer  "campaign_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.index ["campaign_id"], name: "index_companycampaigns_on_campaign_id", using: :btree
-    t.index ["company_id"], name: "index_companycampaigns_on_company_id", using: :btree
+    t.string   "security"
+    t.integer  "port"
+    t.string   "password"
+    t.string   "username"
+    t.string   "address"
+    t.integer  "user_id"
+    t.index ["user_id"], name: "index_companies_on_user_id", using: :btree
   end
 
   create_table "contact_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -62,6 +60,15 @@ ActiveRecord::Schema.define(version: 20170109150450) do
     t.datetime "updated_at", null: false
     t.index ["contact_id"], name: "index_contact_users_on_contact_id", using: :btree
     t.index ["user_id"], name: "index_contact_users_on_user_id", using: :btree
+  end
+
+  create_table "contactabogados", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "user_id"
+    t.integer  "contact_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contact_id"], name: "index_contactabogados_on_contact_id", using: :btree
+    t.index ["user_id"], name: "index_contactabogados_on_user_id", using: :btree
   end
 
   create_table "contacts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -84,49 +91,50 @@ ActiveRecord::Schema.define(version: 20170109150450) do
   end
 
   create_table "contracts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "campaign_id"
     t.date     "date"
     t.integer  "user_id"
     t.string   "season"
     t.string   "portfolio_number"
     t.string   "membership"
     t.string   "membership_number"
-    t.string   "membership_size"
     t.string   "membership_type"
     t.string   "mail"
-    t.float    "sell_price",           limit: 24
-    t.float    "number_weeks",         limit: 24
-    t.float    "price_week",           limit: 24
-    t.float    "price_rent",           limit: 24
+    t.float    "sell_price",        limit: 24
+    t.float    "number_weeks",      limit: 24
+    t.float    "price_week",        limit: 24
+    t.float    "price_rent",        limit: 24
     t.string   "tipo"
     t.string   "owner"
-    t.string   "legal_representative"
-    t.string   "atipogente"
-    t.float    "commission",           limit: 24
+    t.float    "commission",        limit: 24
     t.string   "coowner"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.integer  "contact_id"
     t.string   "lenguaje"
     t.string   "unit_size"
     t.string   "country"
     t.string   "city"
     t.string   "resort"
-    t.index ["campaign_id"], name: "index_contracts_on_campaign_id", using: :btree
     t.index ["contact_id"], name: "index_contracts_on_contact_id", using: :btree
     t.index ["user_id"], name: "index_contracts_on_user_id", using: :btree
   end
 
   create_table "datatemplates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "template_id"
-    t.text     "content",     limit: 65535
+    t.text     "content",            limit: 65535
     t.integer  "width"
     t.integer  "height"
     t.integer  "fontsize"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.integer  "left_width"
     t.string   "color"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.string   "bold"
+    t.string   "text_align"
     t.index ["template_id"], name: "index_datatemplates_on_template_id", using: :btree
   end
 
@@ -158,6 +166,7 @@ ActiveRecord::Schema.define(version: 20170109150450) do
     t.string   "attachment_content_type"
     t.integer  "attachment_file_size"
     t.datetime "attachment_updated_at"
+    t.string   "to_user"
     t.index ["contact_id"], name: "index_historycontacts_on_contact_id", using: :btree
     t.index ["user_id"], name: "index_historycontacts_on_user_id", using: :btree
   end
@@ -174,6 +183,34 @@ ActiveRecord::Schema.define(version: 20170109150450) do
     t.index ["user_id"], name: "index_notifications_on_user_id", using: :btree
   end
 
+  create_table "payments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "contract_id"
+    t.float    "cantidad",     limit: 24
+    t.integer  "numero"
+    t.integer  "user_id"
+    t.boolean  "status",                  default: false
+    t.date     "fecha_cierre"
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.index ["contract_id"], name: "index_payments_on_contract_id", using: :btree
+    t.index ["user_id"], name: "index_payments_on_user_id", using: :btree
+  end
+
+  create_table "signempresas", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "user_id"
+    t.integer  "company_id"
+    t.string   "nombre"
+    t.boolean  "eliminado",          default: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.string   "firma_file_name"
+    t.string   "firma_content_type"
+    t.integer  "firma_file_size"
+    t.datetime "firma_updated_at"
+    t.index ["company_id"], name: "index_signempresas_on_company_id", using: :btree
+    t.index ["user_id"], name: "index_signempresas_on_user_id", using: :btree
+  end
+
   create_table "templates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "company_id"
     t.string   "lenguaje"
@@ -183,6 +220,7 @@ ActiveRecord::Schema.define(version: 20170109150450) do
     t.string   "papermate_content_type"
     t.integer  "papermate_file_size"
     t.datetime "papermate_updated_at"
+    t.string   "tipo"
     t.index ["company_id"], name: "index_templates_on_company_id", using: :btree
   end
 
@@ -224,17 +262,20 @@ ActiveRecord::Schema.define(version: 20170109150450) do
     t.integer  "status"
     t.integer  "number"
     t.boolean  "eliminado",                         default: false
+    t.string   "firma_file_name"
+    t.string   "firma_content_type"
+    t.integer  "firma_file_size"
+    t.datetime "firma_updated_at"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
   add_foreign_key "campaigns", "companies"
-  add_foreign_key "companycampaigns", "campaigns"
-  add_foreign_key "companycampaigns", "companies"
   add_foreign_key "contact_users", "contacts"
   add_foreign_key "contact_users", "users"
+  add_foreign_key "contactabogados", "contacts"
+  add_foreign_key "contactabogados", "users"
   add_foreign_key "contacts", "campaigns"
-  add_foreign_key "contracts", "campaigns"
   add_foreign_key "contracts", "contacts"
   add_foreign_key "contracts", "users"
   add_foreign_key "datatemplates", "templates"
@@ -243,6 +284,8 @@ ActiveRecord::Schema.define(version: 20170109150450) do
   add_foreign_key "historycontacts", "contacts"
   add_foreign_key "historycontacts", "users"
   add_foreign_key "notifications", "users"
+  add_foreign_key "signempresas", "companies"
+  add_foreign_key "signempresas", "users"
   add_foreign_key "templates", "companies"
   add_foreign_key "usercompanies", "companies"
   add_foreign_key "usercompanies", "users"

@@ -6,15 +6,27 @@
   .field
     = f.label :privilegio, "Privilege"
     %br/
-    = f.select(:privilegio, [['Liner', 1],['Recepción', 2], ['AdminGroup', 3], ['AdminCompany', 4], ['Administrator', 6]],                                        
-      {}, {:class=>"form-control"})                                                          
+    = f.select(:privilegio, [['Liner', 1],['Abogado', 2],['Recepción', 3],['Representante legal', 4], ['AdminGroup', 5], ['AdminCompany', 6], ['Administrator', 7]],{}, {:class=>"form-control", id: "privilegio"})                                                         
   .field
     = f.label :nombre, "User Name"
     %br/
     = f.text_field :nombre , class: "form-control"
+    -if @minimum_password_length
+      %em
+        ="(#{@minimum_password_length} characters minimum)"
+  .field
+    =f.label :password
+    =f.password_field :password, class: "form-control"
+  .field
+    =f.label :password_confirmation
+    =f.password_field :password_confirmation, class: "form-control"
   .field
     = f.label :meta, "Monthly target $$ (optional)"
     %br/
     = f.number_field :meta , class: "form-control", "step"=>"any"
+  .field
+    =f.label :firma, "Upload a sign"
+    =f.file_field :firma
+  .field
   .actions
-    = f.submit  "Save data user" ,"data-inline"=>"true", class: "btn btn-default"
+    = f.submit  "Save data user" ,"data-inline"=>"true", class: "btn btn-default", onclick:"show_load()"

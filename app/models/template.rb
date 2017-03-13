@@ -15,6 +15,7 @@
 
 class Template < ApplicationRecord
   belongs_to :company
+  validates :tipo, presence: true
   has_attached_file :papermate, default_url: "/images/:style/missing.png"
   validates_attachment_content_type :papermate, content_type: ['image/jpeg']
   has_many :datatemplates

@@ -13,6 +13,10 @@ function active(){
 	}
 
 }
+
+function show_load(){
+	$("#backspinner").removeClass("dispnone");
+}
 function modificar(){
 	$("#price_rent").val($("#priceweek").val() * $("#numweek").val())
 }

@@ -12,7 +12,7 @@ class GroupsController < ApplicationController
   def show
     @newuser = Usergroup.new
     @members = Usergroup.all
-    @users = User.where("id not in(select user_id from usergroups where(group_id = #{@group.id}))").activos.map{ |c| [c.nombre, c.id] }
+    @users = User.where("id not in(select user_id from usergroups where(group_id = #{@group.id}))").liners.activos.map{ |c| [c.nombre, c.id] }
   end
 
   # GET /groups/new

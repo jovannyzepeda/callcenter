@@ -57,10 +57,13 @@ gem 'font-awesome-rails'
 gem 'paperclip'
 gem "spreadsheet"
 gem 'prawn-rails'
-gem 'bootsy'
 gem 'annotate'
 gem 'autoprefixer-rails'
 gem 'sidekiq'
 gem 'sinatra', require: nil
 gem "highcharts-rails"
 gem 'will_paginate'
+gem 'bootstrap-select-rails'
+gem 'tinymce-rails'
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'

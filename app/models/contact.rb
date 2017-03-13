@@ -9,8 +9,17 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  status      :string(255)
+#  date_close  :date
+#  eliminado   :boolean          default("0")
+#  fax         :string(255)
+#  correo      :string(255)
+#  city        :string(255)
+#  country     :string(255)
+#  unit_size   :string(255)
+#  season      :string(255)
+#  resort      :string(255)
 #
-
+ 
 class Contact < ApplicationRecord
   belongs_to :campaign
   has_one :contract
@@ -19,6 +28,7 @@ class Contact < ApplicationRecord
   has_many :historycontacts
   validates :cliente, presence: true
   validates :telefono, presence: true
+  has_one :contactabogado
   #after_create :asign_to_user
   include FunctionsConcern
   private 

@@ -1,6 +1,7 @@
 class CompaniesController < ApplicationController
   before_action :set_company, only: [:show, :edit, :update, :destroy]
   before_action :autenticacion_companygroup
+  before_action :set_representante, only: [:edit, :new]
   # GET /companies
   # GET /companies.json
   def index
@@ -10,10 +11,10 @@ class CompaniesController < ApplicationController
   # GET /companies/1
   # GET /companies/1.json
   def show
-    @newcampaign = Companycampaign.new
     @usercompany = Usercompany.new
-    @campaign = Campaign.where("id not in(select campaign_id from companycampaigns where(company_id = #{@company.id}))").activos.map{ |c| [c.nombre, c.id] }
     @usersadministrator = User.where("privilegio > 1 and id not in(select user_id from usercompanies where(company_id = #{@company.id}))").activos.map{ |c| [c.nombre, c.id] }
+    @users = User.all.activos.map{ |c| [c.nombre, c.id] }
+    @signempresa = Signempresa.new
   end
 
   # GET /companies/new
@@ -29,7 +30,7 @@ class CompaniesController < ApplicationController
   # POST /companies.json
   def create
     @company = Company.new(company_params)
-
+    @company.password = Company.codificar(@company.password)
     respond_to do |format|
       if @company.save
         format.html { redirect_to @company, notice: 'Company was successfully created.' }
@@ -46,6 +47,7 @@ class CompaniesController < ApplicationController
   def update
     respond_to do |format|
       if @company.update(company_params)
+        @company.update(password:Company.codificar(@company.password))
         format.html { redirect_to @company, notice: 'Company was successfully updated.' }
         format.json { render :show, status: :ok, location: @company }
       else
@@ -58,21 +60,24 @@ class CompaniesController < ApplicationController
   # DELETE /companies/1
   # DELETE /companies/1.json
   def destroy
-    @company.destroy
     respond_to do |format|
-      format.html { redirect_to companies_url, notice: 'Company was successfully destroyed.' }
-      format.json { head :no_content }
+      if @company.update(eliminado: true)
+        format.html { redirect_to companies_url, notice: 'Company was successfully destroyed.' }
+      else 
+        format.html { redirect_to companies_url, notice: 'Error.' }
+      end
     end
   end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_company
       @company = Company.find(params[:id])
     end
-
+    def set_representante
+      @legals = User.where("privilegio = 4").activos.map{|c| [c.nombre, c.id]}
+    end
     # Never trust parameters from the scary internet, only allow the white list through.
     def company_params
-      params.require(:company).permit(:nombre, :logo)
+      params.require(:company).permit(:nombre, :logo, :address, :username, :password, :port, :security, :user_id)
     end
 end

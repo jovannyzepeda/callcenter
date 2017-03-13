@@ -1,5 +1,5 @@
 class ContractsController < ApplicationController
-  before_action :set_contract, only: [:show, :edit, :update, :destroy, :download]
+  before_action :set_contract, only: [:show, :edit, :update, :destroy, :cancelled, :updatestatuspayment,:contrato, :pago, :proposal, :legalone, :legaltwo]
   before_action :set_contact
   before_action :autenticacion_companygroup, only: [:destroy]
   # GET /contracts
@@ -12,47 +12,81 @@ class ContractsController < ApplicationController
   # GET /contracts/1.json
   def show
   end
-  def download
-    @template = @contract.contact.campaign.company.templates.where("lenguaje = ?",@contract.lenguaje).last
-    papermate = "#{Rails.root}/public#{@template.papermate.url(:original,timestamp: false)}" 
-    pdf = Prawn::Document.new
-    @template.datatemplates.each do |data|
-      pdf.bounding_box([data.left_width-30,710-data.height], :width => data.width, :height => 600 ) do
-        pdf.text reemplace_text(data.content,@contract), :size => data.fontsize, :color => data.color
+  def proposal
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = WickedPdf.new.pdf_from_string(
+          render_to_string("contracts/proposal.html.erb", layout: false), margin: {top:0, left:0, right:0,bottom:0})
+        send_data pdf, :filename => "propuesta#{@contract.id}.pdf", :type => "application/pdf", :disposition => "attachment"
       end
     end
-    pdf.page_count.times do |i|
-      pdf.go_to_page i
-      pdf.image papermate,:at => [-50, 800],:height => 850, :width => 650
-    end
-    @template.datatemplates.each do |data|
-      pdf.bounding_box([data.left_width-30,710-data.height], :width => data.width, :height => 600 ) do
-        pdf.text reemplace_text(data.content,@contract), :size => data.fontsize, :color => data.color
-      end
-    end
-    send_data pdf.render, filename: 'Contract_for_user.pdf', type: 'application/pdf' 
   end
-  def reemplace_text(text, contrato)
-    text = text.gsub('_sell_price', " #{contrato.sell_price}")
-    text = text.gsub('_campaign', " #{contrato.contact.campaign.nombre}")
-    text = text.gsub('_date', " #{contrato.date}")
-    text = text.gsub('_season', " #{contrato.season}")
-    text = text.gsub('_portfolio_number', " #{contrato.portfolio_number}")
-    text = text.gsub('_membership', " #{contrato.membership}")
-    text = text.gsub('_nmembership_number', " #{contrato.membership_number}")
-    text = text.gsub('_smembership_size', " #{contrato.membership_size}")
-    text = text.gsub('_tmembership_type', " #{contrato.membership_type}")
-    text = text.gsub('_mail', " #{contrato.mail}")
-    text = text.gsub('_number_weeks', " #{contrato.number_weeks}")
-    text = text.gsub('_wprice_week', " #{contrato.price_week}")
-    text = text.gsub('_rprice_rent', " #{contrato.price_rent}")
-    text = text.gsub('_type', " #{contrato.tipo}")
-    text = text.gsub('_owner', " #{contrato.owner}")
-    text = text.gsub('_legal_representative', " #{contrato.legal_representative}")
-    text = text.gsub('_atipogente', " #{contrato.atipogente}")
-    text = text.gsub('_coowner', " #{contrato.coowner}")
-    text = text.gsub('_user', " #{contrato.user.nombre}")
-    return text
+  def legalone
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = WickedPdf.new.pdf_from_string(
+          render_to_string("contracts/legalone.html.erb", layout: false), margin: {top:0, left:0, right:0,bottom:0})
+        send_data pdf, :filename => "Legala#{@contract.id}.pdf", :type => "application/pdf", :disposition => "attachment"
+      end
+    end
+  end
+  def legaltwo
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = WickedPdf.new.pdf_from_string(
+          render_to_string("contracts/legaltwo.html.erb", layout: false), margin: {top:0, left:0, right:0,bottom:0})
+        send_data pdf, :filename => "Legalb#{@contract.id}.pdf", :type => "application/pdf", :disposition => "attachment"
+      end
+    end
+  end
+  def contrato
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = WickedPdf.new.pdf_from_string(
+          render_to_string("contracts/contrato.html.erb", layout: false), margin: {top:0, left:0, right:0,bottom:0})
+        send_data pdf, :filename => "contrato#{@contract.id}.pdf", :type => "application/pdf", :disposition => "attachment"
+      end
+    end
+  end
+  def cancelled
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = WickedPdf.new.pdf_from_string(
+          render_to_string("contracts/cancelacion.html.erb", layout: false), margin: {top:0, left:0, right:0,bottom:0})
+        send_data pdf, :filename => "cancelacion#{@contract.id}.pdf", :type => "application/pdf", :disposition => "attachment"
+      end
+    end
+  end
+  def pago
+    @last_payment = @contract.payments.last
+    if @last_payment.blank? || @last_payment.status == true
+      @payment = @contract.payments.new
+      if @contract.tipo == "Sell"
+        @payment.cantidad = @contract.sell_price
+      else
+        @payment.cantidad = @contract.price_rent
+      end
+      if @last_payment.present?
+        @payment.numero = @last_payment.numero + 1
+      else
+        @payment.numero = 1
+      end
+      @payment.user_id = @contract.contact.user.id
+      @payment.save
+    end
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = WickedPdf.new.pdf_from_string(
+          render_to_string("contracts/pago.html.erb", layout: false), margin: {top:0, left:0, right:0,bottom:0})
+        send_data pdf, :filename => "payment#{@contract.id}.pdf", :type => "application/pdf", :disposition => "attachment"
+      end
+    end
   end
   # GET /contracts/new
   def new
@@ -128,9 +162,9 @@ class ContractsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def contract_params
-      params.require(:contract).permit( :date, :season, :portfolio_number, :membership, :membership_number, :membership_size, :membership_type, :mail, :sell_price, :number_weeks, :price_week, :price_rent, :tipo, :owner, :legal_representative, :atipogente, :commission, :coowner, :lenguaje, :unit_size, :country, :city, :resort)
+      params.require(:contract).permit( :date, :season, :portfolio_number, :membership, :membership_number, :membership_type, :mail, :sell_price, :number_weeks, :price_week, :price_rent, :tipo, :owner, :commission, :coowner, :lenguaje, :unit_size, :country, :city, :resort)
     end
     def contract_params_normal
-      params.require(:contract).permit( :date, :season, :portfolio_number, :membership, :membership_number, :membership_size, :membership_type, :mail, :sell_price, :number_weeks, :price_week, :price_rent, :tipo, :owner, :legal_representative, :atipogente, :coowner, :lenguaje, :unit_size, :country, :city, :resort)
+      params.require(:contract).permit( :date, :season, :portfolio_number, :membership, :membership_number, :membership_type, :mail, :sell_price, :number_weeks, :price_week, :price_rent, :tipo, :owner, :coowner, :lenguaje, :unit_size, :country, :city, :resort)
     end
 end

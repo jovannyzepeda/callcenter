@@ -8,7 +8,10 @@
 
   .field
     = f.label :lenguaje
-    = f.select :lenguaje, options_for_select([["EN"],["ES"]]),{},{class: "form-control"}
+    = f.select :lenguaje, options_for_select([["EN"],["ES"]]),{},{class: "form-control max-trescientos"}
+  .field
+    = f.label :tipo, "Type"
+    = f.select :tipo, options_for_select(["Proposal","Contract" ,"Legal one" ,"Legal two","Payments", "Cancellation"]), {}, {class: "form-control max-trescientos"}
   .field
     = f.label :papermate
     = f.file_field :papermate

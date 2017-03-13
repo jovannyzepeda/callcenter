@@ -10,6 +10,12 @@
 #  logo_content_type :string(255)
 #  logo_file_size    :integer
 #  logo_updated_at   :datetime
+#  eliminado         :boolean          default("0")
+#  security          :string(255)
+#  port              :integer
+#  password          :string(255)
+#  username          :string(255)
+#  address           :string(255)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

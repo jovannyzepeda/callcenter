@@ -54,10 +54,11 @@
                 = link_to  destroy_user_session_path, method: :delete, class: "page-scroll" do
                   %i.fa.fa-power-off
                   Log Out
-              %li
-                = link_to edit_user_registration_path,"class" => "page-scroll" do
-                  %i.fa.fa-address-card-o
-                  My Account
+              -if current_user.is_admin?
+                %li
+                  = link_to edit_user_registration_path,"class" => "page-scroll" do
+                    %i.fa.fa-address-card-o
+                    My Account
             - else
               %li
                 = link_to new_user_session_path, class: "page-scroll" do

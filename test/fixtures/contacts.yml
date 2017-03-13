@@ -9,6 +9,15 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  status      :string(255)
+#  date_close  :date
+#  eliminado   :boolean          default("0")
+#  fax         :string(255)
+#  correo      :string(255)
+#  city        :string(255)
+#  country     :string(255)
+#  unit_size   :string(255)
+#  season      :string(255)
+#  resort      :string(255)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

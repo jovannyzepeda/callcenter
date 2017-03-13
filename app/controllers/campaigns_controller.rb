@@ -2,6 +2,7 @@ class CampaignsController < ApplicationController
   before_action :set_campaign, only: [:show, :edit, :update, :destroy]
   before_action :autenticacion_companygroup
   before_action :auth
+  before_action :get_list_company, only: [:new, :edit]
   # GET /campaigns
   # GET /campaigns.json
   def index
@@ -75,6 +76,9 @@ class CampaignsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def campaign_params
-      params.require(:campaign).permit(:nombre) 
+      params.require(:campaign).permit(:nombre, :company_id) 
+    end
+    def get_list_company
+      @company = Company.activos.map{ |c| [c.nombre, c.id] }
     end
 end

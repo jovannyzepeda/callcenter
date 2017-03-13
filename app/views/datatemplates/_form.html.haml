@@ -1,21 +1,10 @@
 = form_for [@company,@template,@datatemplate] do |f|
+	= tinymce 
+	.field
+		=f.label :left_width 
+		=f.number_field :left_width
 	.field
 		=f.label :content
-		=f.text_area :content, class: "form-control bigtextare"
-	.field
-		=f.label :width
-		=f.number_field :width, class: "form-control", max: "570"
-	.field
-		=f.label :height, "Padding top"
-		=f.number_field :height, class: "form-control", max: "770"
-		.field
-		=f.label :left_width, "Padding left"
-		=f.number_field :left_width, class: "form-control", max: "770"
-	.field
-		=f.label :fontsize, "Font Size", max: "100"
-		=f.text_field :fontsize, class: "form-control"
-	.field
-		=f.label :color, "Color hexadecimal"
-		=f.text_field :color, class: "form-control"
+		=f.text_area :content, class: "form-control bigtextare tinymce"
 
 	=f.submit "Add data", class: "btn btn-primary"

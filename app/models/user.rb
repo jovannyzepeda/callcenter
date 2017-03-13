@@ -21,6 +21,7 @@
 #  privilegio             :integer
 #  status                 :integer
 #  number                 :integer
+#  eliminado              :boolean          default("0")
 #
 
 class User < ApplicationRecord
@@ -28,8 +29,10 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   	devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-   	include PermissionsConcern
+   	include PermissionsConcern 
    	include FunctionsConcern
+    has_attached_file :firma, default_url: "/images/:style/missing.png"
+    validates_attachment_content_type :firma, content_type: /\Aimage\/.*\z/
    	has_many :usergroup
 	  has_many :groups, through: :usergroup
     has_many :contacts, through: :contact_user
@@ -37,6 +40,8 @@ class User < ApplicationRecord
     has_many :contracts
     has_many :usercompany
     has_many :companys, through: :usercompany
+    has_many :company
+    has_many :payments
 	def self.update_number(user,number)
 		usuario = User.find(user.id)
 		usuario.update(number: number)

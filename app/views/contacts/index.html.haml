@@ -22,8 +22,8 @@
             %td= contact.user.nombre
           -else
             %td "sd"
-          %td= contact.cliente
-          %td= contact.telefono
+          %td=link_to contact.cliente, contact
+          %td= contact.telefono.to_i
           %td= contact.status?
           %td= contact.campaign.nombre
           %td= contact.campaign.company.nombre

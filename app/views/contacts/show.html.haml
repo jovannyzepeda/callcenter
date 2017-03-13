@@ -3,31 +3,61 @@
         %i.fa.fa-user
         =@contact.cliente
     .big_margin
+    %p
+        ="Phone: #{@contact.telefono.to_i}"
+        -if @contact.fax.present?
+            ="Fax: #{@contact.fax.to_i}"
+        -if @contact.contactabogado.present?
+            %br
+            ="Assigned attorney #{@contact.contactabogado.user.nombre}"
     -if @contact.contract
         %button.btn.btn-primary.white-text{:onclick => "open_modal()"}
             %i.fa.fa-eye
             Show Data contract
-        =link_to contact_download_contract_path(@contact,@contact.contract),method: :post, class: "btn btn-danger white-text" do
+        -if @contact.status == "Canceled"
+            =link_to contact_cancelled_contract_path(@contact,@contact.contract,format: 'pdf'), method: :get, class: "btn btn-danger white-text" do
+                %i.fa.fa-download
+                Letter of cancellation
+    
+        =link_to contact_download_contract_path(@contact,@contact.contract,format: 'pdf'), method: :get, class: "btn btn-primary white-text" do
             %i.fa.fa-download
             Download contract
+        =link_to contact_proposal_contract_path(@contact,@contact.contract,format: 'pdf'),method: :get, class: "btn btn-danger white-text" do
+            %i.fa.fa-download
+            Download proposal
+        =link_to contact_legalone_contract_path(@contact,@contact.contract,format: 'pdf'),method: :get, class: "btn btn-success white-text" do
+            %i.fa.fa-download
+            Download Legal A
+        =link_to contact_legaltwo_contract_path(@contact,@contact.contract,format: 'pdf'),method: :get, class: "btn btn-warning white-text" do
+            %i.fa.fa-download
+            Download Legal B
+        =link_to contact_pago_contract_path(@contact,@contact.contract,format: 'pdf'),method: :get, class: "btn btn-warning white-text" do
+            %i.fa.fa-download
+            Download Payment
     -else
         Current_status : 
         =@contact.status?
         %button.btn.btn-primary.white-text{:onclick => "open_modal()"}
             %i.fa.fa-plus
             Create contract
-    .bigmargin
-        .data_contract.dispnone
-            =render "contracts/form"
-    -if current_user.is_recepcion?
-        .max_250.float_right
-            =form_for @contact do |f|
-                =f.label :date_close
-                =f.date_field :date_close, class: "form-control", id: "date_close_picker"
-                =f.label :status
-                =f.select(:status, options_for_select(["Canceled", "Approved"]), {} , {class: "form-control", id: "status_element"})
-                %br
-                =f.submit "update", class: "btn btn-primary" 
+    .row
+        .bigmargin
+            .data_contract.dispnone
+                =render "contracts/form"
+        -if current_user.is_recepcion?
+            .max_250.float_right
+                =form_for @contact do |f|
+                    =f.label :date_close
+                    =f.date_field :date_close, class: "form-control", id: "date_close_picker"
+                    =f.label :status
+                    =f.select(:status, options_for_select(["Canceled", "Approved"]), {include_blank: true} , {class: "form-control", id: "status_element"})
+                    %br
+                    =f.submit "update", class: "btn btn-primary"
+    -if current_user.is_representante?
+        =form_for [@contact,@contactabogados] do |f|
+            =f.select :user_id, options_for_select(@abogados),{}, class: "max-trescientos form-control"
+            %br
+            =f.submit "save", class: "btn btn-info"
 .col-md-10.col-md-offset-1.bigmargin
     -if current_user.is_admin?
         = link_to edit_contact_path(@contact), class: "btn btn-info white-text" do
@@ -40,7 +70,7 @@
     %h4.alert.alert-info.text-center
         %i.fa.fa-history
         History sell
-    .col-md-6
+    .col-md-4
         -@contact.historycontacts.order(created_at: :desc).each do |history|
             %h6.alert.alert-warning.text-center
                 =history.title
@@ -62,10 +92,10 @@
                         =link_to contact_download_attachment_path(@contact,history),method: :post, class: "btn btn-gray white-text" do
                             %i.fa.fa-file-pdf-o
                             Descargar Adjunto
-    .col-md-6
+    .col-md-8
         %button.btn.yellow{onclick:"viewforms('mail')"}
             %i.fa.fa-paper-plane-o
-            Send mail
+            Request mail
         %button.btn.btn-success{onclick:"viewforms('history')"}
             %i.fa.fa-plus
             create Event
@@ -73,6 +103,39 @@
             =render "historycontact/form"
         #history.dispnone
             =render "historycontact/formaction"
+        -if @contact.contract.present?
+            %table.table
+                %thead
+                    %tr
+                        %th #
+                        %th Application date
+                        %th User
+                        %th Quantity
+                        %th Applied
+                        %th Payment date
+                %tbody
+                    -@contact.contract.payments.each.with_index do |payment, i|
+                        -if payment.status == false
+                            = form_for([@contact,@contact.contract,payment]) do |x|
+                                %tr
+                                    %th=i +1
+                                    %th=payment.created_at.strftime("%y-%m-%d")
+                                    %th=payment.user.nombre
+                                    %th
+                                        =x.submit payment.status
+                                    %th=payment.cantidad
+                                    %th=x.date_field :fecha_cierre
+                        -else
+                            %tr
+                                %th=i +1
+                                %th=payment.created_at.strftime("%y-%m-%d")
+                                %th=payment.user.nombre
+                                %th
+                                    =link_to contact_contract_payment_path(@contact,@contact.contract,payment), method: :put do
+                                        =payment.status
+                                %th=payment.cantidad
+                                %th=payment.fecha_cierre
+
 
 :javascript
     $(document).ready(function(){
@@ -84,7 +147,6 @@
         }
     });
 %link{:href => "//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css", :rel => "stylesheet"}/
-
 %script{:src => "https://code.jquery.com/ui/1.12.1/jquery-ui.js"}
 :javascript
     $(document).ready(function(){

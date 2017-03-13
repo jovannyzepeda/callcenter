@@ -7,9 +7,33 @@
           %li= msg
   .field
     = f.label :nombre
-    = f.text_field :nombre, class: "form-control"
-
+    = f.text_field :nombre,class: "form-control max-trescientos"
   .field
+    =f.label :address
+    =f.text_field :address,class: "form-control max-trescientos"
+  .field
+    =f.label :username
+    =f.text_field :username,class: "form-control max-trescientos"
+  .field
+    =f.label :password
+    =f.text_field :password,class: "form-control max-trescientos"
+  .field
+    =f.label :port
+    =f.text_field :port,class: "form-control max-trescientos"
+  .field
+    =f.label :security
+    =f.select(:security, options_for_select(["TLS","SSL"]),{},{class: "form-control max-trescientos", id: "security"})
+  .field
+    =f.label :logo, "Company logo"
     =f.file_field :logo
+  .field
+    =f.label :user_id
+    =f.select :user_id, options_for_select(@legals), {},{class: "form-control max-trescientos"}
   .actions
     = f.submit 'Save', class: "btn btn-info"
+:javascript
+  $(document).ready(function(){
+    if(#{@company.security.present?}){
+      $("#security").val("#{@company.security}");
+    }
+  })

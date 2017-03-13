@@ -11,9 +11,10 @@
 // about supported directives.
 //
 //= require jquery
-//= require bootsy
 //= require jquery_ujs
 //= require bootstrap
+//= require tinymce-jquery
+//= require bootstrap-select
 //= require highcharts
 //= require highcharts/modules/data
 //= require highcharts/modules/drilldown

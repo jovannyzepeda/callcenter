@@ -29,10 +29,8 @@ class DatatemplatesController < ApplicationController
     respond_to do |format|
       if @template.save
         format.html { redirect_to :back, notice: 'Data template was successfully added.' }
-        format.json { render :show, status: :created, location: @template }
       else
-        format.html { render :new }
-        format.json { render json: @template.errors, status: :unprocessable_entity }
+        format.html { redirect_to :back, notice: 'Data was ocurrer an error.' }
       end
     end
   end
@@ -73,6 +71,6 @@ class DatatemplatesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def datatemplate_params
-      params.require(:datatemplate).permit( :content,:width,:height,:fontsize, :left_width, :color)
+      params.require(:datatemplate).permit( :content,:width,:height,:fontsize, :left_width, :color, :image, :bold, :text_align)
     end
 end

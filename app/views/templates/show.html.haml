@@ -25,9 +25,17 @@
 			%br
 			_nmembership_number
 			%br
-			_smembership_size
-			%br
 			_tmembership_type
+			%br
+			_unit_size
+			%br
+			_country
+			%br
+			_resort
+			%br
+			_lawyer
+			%br
+			_wsignreprlegal
 		.col-md-6
 			_mail
 			%br
@@ -45,9 +53,15 @@
 			%br
 			_legal_representative
 			%br
-			_atipogente
-			%br
 			_coowner
+			%br
+			_city
+			%br
+			_payments
+			%br
+			_lsignlawy
+			%br
+			_asignadmingroup
 .col-md-12
 	%h4.alert.alert-info.text-center
 		Data content
@@ -65,7 +79,7 @@
 			%tbody
 				- @template.datatemplates.each do |data|
 					%tr
-						%td= data.content
+						%td
 						%td= data.width
 						%td= data.height
 						%td= data.left_width
@@ -83,8 +97,6 @@
 	%h3.alert.alert-info.text-center
 		PRELIMINAR VIEW
 	- @template.datatemplates.each do |data|
-		%div.template_preview{:style => "width:#{data.width+200}px;padding-top:#{data.height}px;padding-left:#{data.left_width}px;"}
-			%pre.content{:style => "color: ##{data.color}!important; font-size:#{data.fontsize-2}px;"}
-				= data.content
+		=data.content.html_safe
 	%div{:style => "background: url('#{@template.papermate.url}');height:770px;width:770px;background-repeat:no-repeat;background-size: cover"}
 		

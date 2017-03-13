@@ -15,7 +15,9 @@
     %tbody
       - @companies.each do |company|
         %tr
-          %td= image_tag company.logo.url(:thumb)
+          %td
+            .img_large
+              = image_tag company.logo.url
           %td= company.nombre
           %td= link_to 'Show', company
           %td= link_to 'Edit', edit_company_path(company)

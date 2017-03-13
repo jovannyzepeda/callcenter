@@ -21,6 +21,7 @@
 #  privilegio             :integer
 #  status                 :integer
 #  number                 :integer
+#  eliminado              :boolean          default("0")
 #
 
 require 'test_helper'

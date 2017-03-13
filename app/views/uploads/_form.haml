@@ -1,12 +1,14 @@
 = form_tag({:controller => "uploads", :action => "create_data"}, :method => "post",  remote:true, authenticity_token: true,:multipart => true, id: "uploads_forms") do
 	%p.alert.alert-danger
 		%i.fa.fa-exclamation-triangle
-		The excel file should have the data as follows 1 - name 2 - phone and should be upload in XLS format
+		Es obligatorio que el arhivo de excel se encuentre en formato XLS, adicional se deberá integrar un encabezado para cada columna en las cuales se pueden integrar los siguientes elementos (1 - customer, 2 - phone, 3 - fax, 4 - mail, 5 - city, 6 - country, 7 - unit size, 8 - resort), de ellos es de suma importancia que exista customer y phone ya que son obligatorios el resto son opcionales
 	=label_tag  :campaign_id, "Choose a campaign"
 	=select_tag :campaign_id, options_for_select(@campaign),{class: "form-control max-trescientos"}
+	=label_tag  :user_id, "Choose a user(optional)"
+	=select_tag :user_id, options_for_select(@users),{ :include_blank => '',class: "form-control max-trescientos"}
 	%br
 	=label_tag  :file_data, "Choose a file with data"
-	=file_field_tag :file_data
+	=file_field_tag :file_data, required: "required"
 	%br
 	=submit_tag "Upload Data", class: "btn btn-primary", id: "send_data"
-	%br
+	.big_margin

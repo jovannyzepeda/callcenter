@@ -1,6 +1,6 @@
 class AdminsController < ApplicationController
   before_action :set_user
-  before_action :autenticacion_root
+  #before_action :autenticacion_root
   before_action :first_user
 
 
@@ -27,7 +27,6 @@ class AdminsController < ApplicationController
   # POST /admins
   # POST /admins.json
   def create
-    @pass = "system123456"
     @user = User.new(user_parames)
     if User.last
       @user.number = User.last_active.number
@@ -35,13 +34,11 @@ class AdminsController < ApplicationController
       @user.number = 0
     end
     @user.status = 1
-    @user.password = "system123456"
-    @user.password_confirmation = "system123456"
     unless @first_user.present?
       @user.privilegio = 7
     end
     if @user.save
-      Notificacion.bienvenida(@user,@pass).deliver
+      Notificacion.bienvenida(@user).deliver
       flash[:notice] = "User created correctly." 
       redirect_to admins_path
     else
@@ -53,18 +50,11 @@ class AdminsController < ApplicationController
   # PATCH/PUT /admins/1
   # PATCH/PUT /admins/1.json
   def update
-      if @user.privilegio == 7
+      if current_user.is_admin?
         if @user.update(user_parames)
+          Notificacion.cambio(@user).deliver
           flash[:notice] = "User updated successfully." 
-            redirect_to admins_path
-        else
-          flash[:notice] = "Wrong data or less password to 8 characters."
-          render :action => 'edit'
-        end
-      else
-        if @user.update(user_params)
-          flash[:notice] = "User updated successfully." 
-            redirect_to admins_path
+          redirect_to admins_path
         else
           flash[:notice] = "Wrong data or less password to 8 characters."
           render :action => 'edit'
@@ -108,7 +98,7 @@ class AdminsController < ApplicationController
     end 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_parames
-      params.require(:user).permit(:email, :privilegio, :nombre, :meta)
+      params.require(:user).permit(:email, :privilegio, :nombre, :meta, :password, :password_confirmation,:firma)
     end
     def user_params
       params.require(:user).permit(:email, :nombre, :meta)

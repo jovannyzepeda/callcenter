@@ -8,11 +8,11 @@
   .col-md-4.col-sm-6
     .field
       = f.label :date
-      = f.date_field :date,class: "form-control", id: "calendario"
+      = f.date_field :date,class: "form-control", id: "calendario", required: "required"
   .col-md-4.col-sm-6
     .field
       = f.label :season
-      = f.text_field :season,class: "form-control", id: "season"
+      = f.text_field :season,class: "form-control", id: "season", required: "required"
   .col-md-4.col-sm-6  
     .field
       = f.label :portfolio_number
@@ -27,8 +27,8 @@
       = f.text_field :membership_number,class: "form-control"
   .col-md-4.col-sm-6
     .field
-      = f.label :membership_size
-      = f.text_field :membership_size,class: "form-control"
+      =f.label :unit_size
+      =f.text_field :unit_size, class: "form-control", id: "unit_size"
   .col-md-4.col-sm-6
     .field
       = f.label :membership_type
@@ -36,11 +36,11 @@
   .col-md-4.col-sm-6
     .field
       = f.label :mail
-      = f.email_field :mail,class: "form-control", id: "correo_mail"
+      = f.email_field :mail,class: "form-control", id: "correo_mail", required: "required"
   .col-md-4.col-sm-6
     .field
       = f.label :tipo, "Type"
-      = f.select(:tipo, options_for_select(["Rent", "Sell"]),{},{class: "form-control", onchange: "active()", id: "option_sell"})
+      = f.select(:tipo, options_for_select(["Rent", "Sell"]),{include_blank: true},{class: "form-control", onchange: "active()", id: "option_sell"})
   .col-md-4.col-sm-6#venta
     .field
       = f.label :sell_price
@@ -60,27 +60,15 @@
   .col-md-4.col-sm-6
     .field
       = f.label :owner
-      = f.text_field :owner,class: "form-control"
-  .col-md-4.col-sm-6
-    .field
-      = f.label :legal_representative
-      = f.text_field :legal_representative,class: "form-control"
-  .col-md-4.col-sm-6
-    .field
-      = f.label :atipogente
-      = f.text_field :atipogente, class: "form-control"
-  .col-md-4.col-sm-6
-    .field
-      =f.label :unit_size
-      =f.text_field :unit_size, class: "form-control", id: "unit_size"
+      = f.text_field :owner,class: "form-control"   
   .col-md-4.col-sm-6
     .field
       =f.label :country
-      =f.text_field :country, class: "form-control", id: "country"
+      =f.text_field :country, class: "form-control", id: "country", required: "required"
   .col-md-4.col-sm-6
     .field
       =f.label :city
-      =f.text_field :city, class: "form-control", id: "city"
+      =f.text_field :city, class: "form-control", id: "city", required: "required"
   .col-md-4.col-sm-6
     .field
       =f.label :resort

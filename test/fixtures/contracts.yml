@@ -26,6 +26,11 @@
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  contact_id           :integer
+#  lenguaje             :string(255)
+#  unit_size            :string(255)
+#  country              :string(255)
+#  city                 :string(255)
+#  resort               :string(255)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

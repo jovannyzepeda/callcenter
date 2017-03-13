@@ -1,17 +1,9 @@
-%link{:href => "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css", :rel => "stylesheet"}/
-/ Latest compiled and minified JavaScript
-%script{:src => "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"}
+
 %h2.text-center.alert.alert-danger
 	Manager company
 	= @company.nombre
 .col-md-12.no-padding.bigmargin
-	.col-md-3
-		%p.text-center.alert.alert-info.max-trescientos add campaign to company 
-		= form_for [@company,@newcampaign] do |f|
-			=f.select :campaign_id, options_for_select(@campaign), {},{class: "selectpicker max-trescientos","data-live-search"=>"true"}
-			%br
-			=f.submit "Add campaign", class: "btn btn-primary"
-	.col-md-3
+	.col-md-4
 		%p.text-center.alert.alert-info.max-trescientos Add Administrator to company 
 		= form_for [@company,@usercompany] do |f|
 			=f.select :user_id, options_for_select(@usersadministrator), {},{class: "selectpicker max-trescientos","data-live-search"=>"true"}
@@ -24,8 +16,8 @@
 		%ul.list-group.margin_top
 			-@company.templates.each do |template|
 				%li.list-group-item
-					=link_to "Template: #{@company.nombre}(#{template.lenguaje})",company_template_path(@company,template)
-	.col-md-3.bigmargin.border
+					=link_to "#{@company.nombre} #{template.tipo}: (#{template.lenguaje})",company_template_path(@company,template)
+	.col-md-5.bigmargin.border
 		%h4.alert.alert-info.text-center
 			Administrators list
 		%ul.list-group
@@ -53,3 +45,35 @@
 	= link_to companies_path, class: "btn btn-default" do
 		%i.fa.fa-reply
 		Go back
+
+.col-md-12
+	%h4.alert.alert-info.text-center
+		User Sign
+	= form_for [@company,@signempresa]do |f|
+		=f.label :user_id
+		%br
+		=f.select :user_id, options_for_select(@users),{},{class: "selectpicker max-trescientos","data-live-search"=>"true"}
+		%br
+		=f.label :nombre, "Name"
+		=f.text_field :nombre,class: "form-control max-trescientos"
+		%br
+		=f.label :firma, "Sign"
+		=f.file_field :firma
+		=f.submit "Create User", class: "btn btn-primary"
+	%table.table
+		%thead
+			%tr
+				%th Name
+				%th Sign
+				%th Real name
+				%th
+
+		%tbody
+		-@company.signempresas.activos.each do |user|
+			%tr
+				%td=user.nombre
+				%td=image_tag user.firma.url(:thumb)
+				%td=user.user.nombre
+				%td
+					=link_to  company_signempresa_path(@company,user), :method => :delete, :data => { :confirm => 'Are you sure?' } do
+						%i.fa.fa-times.delete

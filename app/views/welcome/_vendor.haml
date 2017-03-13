@@ -4,10 +4,11 @@
 	%p.alert.alert-danger
 		Your sales for the current month are
 		%b
-			=@user_sell
+			=@user_sell[1]
 		and your goal for the month
 		%b
 			=current_user.meta
+		
 	%h3.alert.alert-warning.text-center
 		%i.fa.fa-list
 		Customers in proccess

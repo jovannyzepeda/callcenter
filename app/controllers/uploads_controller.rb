@@ -2,12 +2,19 @@ class UploadsController < ApplicationController
   before_action :autenticacion_root
   Ruta_directorio_archivos = "public/";
   def index
-  	@campaign = Campaign.all.map{ |c| [c.nombre, c.id] }
+  	@campaign = Campaign.all.activos.map{ |c| [c.nombre, c.id] }
+  	@users = User.liners.activos.map{ |c| [c.nombre, c.id] }
   end
+  #esta funcion se encarga de cargar todos los elementos de un archivo a la base de datos
+  #tomando la primer columna como referencia para posteriormente cargarla a la base
   def create_data 
   	if request.post? 
 	  		begin
-	  			@usuarios = Contact.asign_to_user(params[:campaign_id])
+	  			if params[:user_id].present?
+	  				@user = User.find(params[:user_id])
+	  			else
+	  				@usuarios = Contact.asign_to_user(params[:campaign_id])
+	  			end
 			    archivo = params[:file_data];
 			    nombre = archivo.original_filename
 			    directorio = Ruta_directorio_archivos;
@@ -57,10 +64,15 @@ class UploadsController < ApplicationController
 				  			end
 					  		contacto.campaign_id = params[:campaign_id]
 							if contacto.save
-								usuario = @usuarios.sort_by{|e| e[:number]}.first
-								@usuarios.sort_by{|e| e[:number]}.first.number = usuario.number + 1
+								if params[:user_id] != ""
+									usuario = @user
+								else
+									usuario = @usuarios.sort_by{|e| e[:number]}.first
+									#@usuarios.sort_by{|e| e[:number]}.first.number = usuario.number + 1
+								end
 								ContactUser.save_data(usuario,contacto)
-								User.update_number(usuario, usuario.number + 1)
+								numbero = usuario.number + 1
+								usuario.update(number: numbero)
 							else
 								@active = 1
 								@notice = @notice + contacto.cliente + "\n"

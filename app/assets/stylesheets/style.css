@@ -7,6 +7,17 @@
     margin-top: 20%;
     margin-left: 45%;
 }
+.img_large >img{
+	max-width: 100px;
+}
+.thead-dark{
+	background: #373a3c;
+    color: white;
+}
+.thead-dark > tr >th{
+	border: solid 1px;
+	text-align: center;
+}
 #list_notifications{
 	width: 250px;
 }
@@ -15,6 +26,9 @@
 }
 .max_250{
 	max-width: 250px;
+}
+.content_img > img{
+	max-width: 100%!important
 }
 .no_margin_top{
 	margin-top: 0px!important;

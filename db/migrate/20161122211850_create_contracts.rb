@@ -1,14 +1,13 @@
 class CreateContracts < ActiveRecord::Migration[5.0]
   def change
     create_table :contracts do |t|
-      t.references :campaign, foreign_key: true
+      #t.references :campaign, foreign_key: true
       t.date :date
       t.references :user, foreign_key: true
       t.string :season
       t.string :portfolio_number
       t.string :membership
       t.string :membership_number
-      t.string :membership_size
       t.string :membership_type
       t.string :mail
       t.float :sell_price
@@ -17,8 +16,6 @@ class CreateContracts < ActiveRecord::Migration[5.0]
       t.float :price_rent
       t.string :tipo
       t.string :owner
-      t.string :legal_representative
-      t.string :atipogente
       t.float :commission
       t.string :coowner
 

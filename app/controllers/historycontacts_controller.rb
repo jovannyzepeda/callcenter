@@ -27,6 +27,6 @@ class HistorycontactsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def historycontact_params
-      params.require(:historycontact).permit(:title, :attachment, :content, :email)
+      params.require(:historycontact).permit(:title, :attachment, :content, :email, :to_user)
     end
 end

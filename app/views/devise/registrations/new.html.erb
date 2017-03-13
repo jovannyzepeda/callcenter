@@ -2,30 +2,7 @@
   <div class="mdl-layout-spacer"></div>
   <div class="mdl-cell mdl-cell--4-col">
     <h2>Sign up</h2>
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-      <%= devise_error_messages! %>
-      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <%= f.email_field :email,  class: "mdl-textfield__input" %>
-        <%= f.label :email, class:"mdl-textfield__label"%>
-      </div>
-      <br>
-      <% if @minimum_password_length %>
-        <em>(<%= @minimum_password_length %> characters minimum)</em>
-      <% end %><br />
-      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <%= f.password_field :password,  class: "mdl-textfield__input" %>
-        <%= f.label :password, class:"mdl-textfield__label"%>
-      </div>
-
-      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <%= f.password_field :password_confirmation,  class: "mdl-textfield__input" %>
-        <%= f.label :password_confirmation, class:"mdl-textfield__label"%>
-      </div>
-
-      <div class="actions">
-        <%= f.submit "Log in", class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent"%>
-      </div>
-    <% end %>
+    
 
     <%= render "devise/shared/links" %>
   </div>

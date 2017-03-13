@@ -6,6 +6,9 @@
         - @historycontact.errors.full_messages.each do |msg|
           %li= msg
   .field
+    = f.label :to_user, "Department"
+    = f.select :to_user, options_for_select(["Contact department","Legal department", "lawyer"]),{include_blank: true},class: "form-control"
+  .field
     = f.label :title
     = f.text_field :title, class: "form-control"
   .field

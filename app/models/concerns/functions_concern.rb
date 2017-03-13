@@ -1,13 +1,13 @@
 module FunctionsConcern
 	#es para agergar tiposdeusuarios yu permisos
 	extend ActiveSupport::Concern
-	included do
+	included do 
 		scope :ultimos, ->{order(created_at: :desc)}
 		scope :activos, -> {where(eliminado:false).ultimos}
-		scope :ventas_aprobadas, -> {where(status: "Approved").order(date_close: :asc)}
-		scope :ultimos_30_dias, -> {where("date_close >= ?",  30.days.ago)}
+		scope :ventas_aprobadas, -> {where(status: true).order(fecha_cierre: :asc)}
+		scope :ultimos_30_dias, -> {where("fecha_cierre >= ?",  30.days.ago)}
 		scope :liners, -> {where(privilegio: 1)}
-		scope :ultimo_mes, -> {where("date_close > ? ", Date.today.beginning_of_month ) }
+		scope :ultimo_mes, -> {where("fecha_cierre > ? ", Date.today.beginning_of_month ) }
 		scope :ventas_faltantes, ->{where(status: nil)}
 	end
 	def is_active?
@@ -29,14 +29,18 @@ module FunctionsConcern
   	end
   	def privilegio?
   		case self.privilegio
-		  	when  6
+		  	when  7
 		  		return "Administrator"
-		  	when 4
+		  	when 6
 		  		return "Company Administrator"
-		  	when 3
+		  	when 5
 		  		return "Group Administrator"
+		  	when 4
+		  		return "Representante legal"
+		  	when 3
+		  		return "Reeption"
 		  	when  2
-		  		return "Reception"
+		  		return "Abogado"
 		  	when  1
 		  		return "Liner"
 	  	end

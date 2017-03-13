@@ -1,14 +1,19 @@
 class ContactsController < ApplicationController
+  before_action :auth
   before_action :set_contact, only: [:show, :edit, :update, :destroy]
-  before_action :autenticacion_companygroup, only:[:edit,:update, :destroy, :new]
+  before_action :autenticacion_companygroup, only:[:destroy, :new]
+  before_action :authenticacion_recepcion, only:[:edit]
   before_action :have_permission?, only: :show
   before_action :set_contract, only: :show
-  before_action :auth
   # GET /contracts
   # GET /contracts.json
   def index
     if current_user.is_admin?
       @contacts = Contact.activos.paginate(:page => params[:page], :per_page => 60)
+    elsif current_user.is_representante?
+      @contacts = get_clients_in_process_company(current_user).paginate(:page => params[:page], :per_page => 60)
+    elsif current_user.is_recepcion?
+      @contacts = get_clients_in_process(current_user).paginate(:page => params[:page], :per_page => 60)
     else
       @contacts = current_user.contacts.paginate(:page => params[:page], :per_page => 60)
     end
@@ -18,6 +23,8 @@ class ContactsController < ApplicationController
   # GET /contracts/1.json
   def show
     @historycontact = Historycontact.new
+    @contactabogados = Contactabogado.new
+    @abogados = User.activos.where("privilegio = 2").map{|c| [c.nombre,c.id]}
   end
 
 
@@ -64,7 +71,7 @@ class ContactsController < ApplicationController
       @contact = Contact.find(params[:id])
     end
     def have_permission?
-      unless current_user.is_admin? || current_user.id = @contact.user.id
+      unless current_user.is_abogado? || current_user.id == @contact.user.id
         redirect_to :back, notice: "You can view this content"
       end
     end
@@ -80,4 +87,6 @@ class ContactsController < ApplicationController
     def contract_params
       params.require(:contact).permit(:telefono, :cliente, :status, :date_close, :fax, :correo, :resort, :city, :country, :unit_size, :season)
     end
+
+
 end

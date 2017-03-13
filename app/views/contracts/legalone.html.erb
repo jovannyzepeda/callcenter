@@ -1,0 +1,9 @@
+<%- @template = @contract.contact.campaign.company.templates.where("lenguaje = ? and tipo = 'Legal one' ",@contract.lenguaje).last%>
+<%if @template%>
+	<div style="background: url('<%=Rails.root%>/public<%=@template.papermate.url(:original, timestamp: false)%>');background-size: 1000px 1095px;background-repeat: repeat;padding: 30px;">
+	  <%-@template.datatemplates.each do |x|%>
+	    <%-x.content = Contract.reemplace_text(x.content, @contract)%>
+	    <%=x.content.html_safe%>
+	  <%end%>
+	</div>
+<%end%>
